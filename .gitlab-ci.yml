@@ -163,16 +163,16 @@ migration_tests:
         - /tmp/odoo_tests/
 
 
-translation_rate_ua:
-    image: registry.crnd.pro/crnd-opensource/docker/odoo-ci-x:16.0-ci
-    stage: test
-    <<: *pip_cache_definition
-    before_script:
-        - odoo-helper link .
-    script:
-#        - odoo-helper --use-unbuffer tr rate --lang uk_UA --min-total-rate 94 --min-addon-rate 80 $(odoo-helper addons list .)
-        - odoo-helper --use-unbuffer tr rate --lang uk_UA $(odoo-helper addons list .)
-    coverage: '/^TOTAL\s+\|\s+\d+\s+\|\s+\d+\s+|\s+(\d+\.\d+)/'
+#translation_rate_ua:
+#    image: registry.crnd.pro/crnd-opensource/docker/odoo-ci-x:16.0-ci
+#    stage: test
+#    <<: *pip_cache_definition
+#    before_script:
+#        - odoo-helper link .
+#    script:
+##        - odoo-helper --use-unbuffer tr rate --lang uk_UA --min-total-rate 94 --min-addon-rate 80 $(odoo-helper addons list .)
+#        - odoo-helper --use-unbuffer tr rate --lang uk_UA $(odoo-helper addons list .)
+#    coverage: '/^TOTAL\s+\|\s+\d+\s+\|\s+\d+\s+|\s+(\d+\.\d+)/'
 
 
 .deploy_review_definition: &deploy_review_definition
