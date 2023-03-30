@@ -5,7 +5,7 @@
     'website': 'https://kitworks.systems/',
 
     'category': 'Discuss',
-    'license': 'OPL-1',
+    'license': 'LGPL-3',
     'version': '16.0.1.0.2',
     'depends': [
         'mail',

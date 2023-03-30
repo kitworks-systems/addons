@@ -4,7 +4,7 @@
 
     'author': 'Kitworks Systems',
     'website': 'https://kitworks.systems/',
-    'license': 'OPL-1',
+    'license': 'LGPL-3',
     'category': 'Extra Tools',
 
     'depends': ['base', ],
