@@ -79,7 +79,7 @@ var FieldMany2OneReference = relational_fields.FieldMany2One.extend({
      * @private
      */
     _setState: function () {
-        if (this.value && this.attrs.options.model_field) {
+        if (this.attrs.options.model_field) {
             this.setRelationModel(this.recordData[this.attrs.options.model_field], true);
         }
     },
