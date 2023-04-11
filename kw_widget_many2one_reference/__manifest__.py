@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 {
     'name': "Widget to field many2one_reference",
     'version': '14.0.1.0.1',

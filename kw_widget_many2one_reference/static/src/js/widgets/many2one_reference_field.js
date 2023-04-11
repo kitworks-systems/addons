@@ -208,7 +208,7 @@ var FieldMany2OneReferenceToModel = basic_fields.FieldChar.extend({
 
 });
 
-fieldRegistry.add('many2one_reference', FieldMany2OneReference);
-fieldRegistry.add('many2one_reference_model', FieldMany2OneReferenceToModel);
+fieldRegistry.add('kw_many2one_reference', FieldMany2OneReference);
+fieldRegistry.add('kw_many2one_reference_model', FieldMany2OneReferenceToModel);
 
 });
