@@ -1,6 +1,6 @@
 {
     'name': 'Mixins',
-    'version': '16.0.1.0.4',
+    'version': '17.0.1.0.4',
 
     'author': 'Kitworks Systems',
     'website': 'https://kitworks.systems/',
