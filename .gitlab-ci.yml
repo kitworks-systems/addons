@@ -85,7 +85,7 @@ ensure-changelog:
     stage: static-test
     script:
         - odoo-helper ci ensure-changelog --format md . origin/$SERIES_BRANCH $CI_COMMIT_SHA
-    allow_failure: true
+    # allow_failure: true
     <<: *only_dev_branch
     <<: *except_auto_commits
 
@@ -93,7 +93,7 @@ ensure-icons:
     stage: static-test
     script:
         - odoo-helper ci ensure-icons .
-    allow_failure: true
+    # allow_failure: true
     <<: *only_dev_branch
     <<: *except_auto_commits
 
@@ -162,16 +162,80 @@ migration_tests:
         paths:
         - /tmp/odoo_tests/
 
+tests_EE:
+    image: registry.crnd.pro/crnd/enterprise-addons:14.0-ci
+    stage: test
+    <<: *pip_cache_definition
+    before_script:
+        - sudo apt-get update && sudo apt-get install -y libmagic1
+        - odoo-helper link .
+    script:
+        - odoo-helper --use-unbuffer test --coverage --coverage-report --coverage-skip-covered --coverage-fail-under 40 --create-test-db --dir .
+    <<: *except_auto_commits
+    coverage: '/^TOTAL\s+\d+\s+\d+\s+(\d+\%)/'
+    artifacts:
+        name: "$CI_JOB_NAME-$CI_COMMIT_REF_NAME"
+        when: on_failure
+        expire_in: 1 day
+        paths:
+        - /tmp/odoo_tests/
+
+test_installation_no_demo_EE:
+    image: registry.crnd.pro/crnd/enterprise-addons:14.0-ci
+    stage: test
+    variables:
+        ODOO_DB_NAME: test-db-clean
+    <<: *pip_cache_definition
+    before_script:
+        - sudo apt-get update && sudo apt-get install -y libmagic1
+        - odoo-helper link .
+        - odoo-helper --use-unbuffer db create $ODOO_DB_NAME
+    script:
+        - odoo-helper addons install --db "$ODOO_DB_NAME" --dir-r . --show-log-on-error
+    <<: *except_auto_commits
+
+migration_tests_EE:
+    image: registry.crnd.pro/crnd/enterprise-addons:14.0-ci
+    stage: test
+    variables:
+        ODOO_DB_NAME: test-db
+    <<: *pip_cache_definition
+    before_script:
+        - sudo apt-get update && sudo apt-get install -y libmagic1
+        - git fetch origin $SERIES_BRANCH
+        - git checkout $SERIES_BRANCH
+        - git pull
+        - odoo-helper link .
+        - odoo-helper --use-unbuffer db create --demo $ODOO_DB_NAME
+        - odoo-helper --use-unbuffer addons install --db $ODOO_DB_NAME --dir .
+        - git checkout $CI_COMMIT_SHA
+        - git clean -fdx
+        - odoo-helper link .
+        - odoo-helper --use-unbuffer addons update-list
+        - odoo-helper --use-unbuffer addons update --db $ODOO_DB_NAME --dir .
+    script:
+        - odoo-helper --use-unbuffer test --coverage --coverage-report --coverage-skip-covered --coverage-fail-under 40 --dir .
+    coverage: '/^TOTAL\s+\d+\s+\d+\s+(\d+\%)/'
+    <<: *only_dev_branch
+    <<: *except_auto_commits
+    allow_failure: true
+    artifacts:
+        name: "$CI_JOB_NAME-$CI_COMMIT_REF_NAME"
+        when: on_failure
+        expire_in: 1 day
+        paths:
+        - /tmp/odoo_tests/
 
 translation_rate_ua:
     image: registry.crnd.pro/crnd-opensource/docker/odoo-ci-x:14.0-ci
     stage: test
+    <<: *only_dev_branch
     <<: *pip_cache_definition
     before_script:
         - odoo-helper link .
     script:
-#        - odoo-helper --use-unbuffer tr rate --lang uk_UA --min-total-rate 94 --min-addon-rate 80 $(odoo-helper addons list .)
-        - odoo-helper --use-unbuffer tr rate --lang uk_UA $(odoo-helper addons list .)
+        - odoo-helper --use-unbuffer tr rate --lang uk_UA --min-total-rate 80 --min-addon-rate 80 $(odoo-helper addons list .)
+        # - odoo-helper --use-unbuffer tr rate --lang uk_UA $(odoo-helper addons list .)
     coverage: '/^TOTAL\s+\|\s+\d+\s+\|\s+\d+\s+|\s+(\d+\.\d+)/'
 
 
@@ -181,6 +245,9 @@ translation_rate_ua:
         CI_REVIEW_INSTALL_APT_DEPS: "poppler-utils libmagic1"
     before_script:
         - ci-review-app init
+        - ci-review-app dep https://github.com/crnd-inc/generic-addons.git "$SERIES_BRANCH"
+        - ci-review-app dep https://github.com/crnd-inc/crnd-web.git "$SERIES_BRANCH"
+        - ci-review-app dep git@gitlab.crnd.pro:kitworks/addons.git "$SERIES_BRANCH"
     script:
         - ci-review-app start
     tags:
