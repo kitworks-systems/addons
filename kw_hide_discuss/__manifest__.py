@@ -6,7 +6,7 @@
 
     'category': 'Discuss',
     'license': 'OPL-1',
-    'version': '14.0.1.0.2',
+    'version': '14.0.1.1.0',
     'depends': [
         'mail',
     ],
