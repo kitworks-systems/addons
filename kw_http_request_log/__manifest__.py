@@ -6,7 +6,7 @@
     'author': 'Kitworks Systems',
     'website': 'https://kitworks.systems/',
 
-    'category': 'Customizations',
+    'category': 'Extra Tools',
     'license': 'LGPL-3',
     'version': '14.0.0.1.0',
 
