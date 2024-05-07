@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
     <record id="kw_http_request_log_1" model="kw.http.request.log">
-        <field name="log_source_id" ref="kw_http_request_log.kw_http_request_source_demo"/>
+        <field name="log_source_id" ref="kw_http_request_log.kw_http_request_log_source_demo"/>
         <field name="name">http://test.test</field>
         <field name="method">POST</field>
         <field name="request_body"><![CDATA[

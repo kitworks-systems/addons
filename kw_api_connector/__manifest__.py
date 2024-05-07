@@ -1,18 +1,16 @@
 {
-    'name': 'HTTP Request Log',
-    'summary': 'Technical module, that may help to store and manage '
-               'HTTP request logs',
+    'name': 'API connector',
+    'summary': 'Technical module, that may help to create API connector',
 
     'author': 'Kitworks Systems',
     'website': 'https://kitworks.systems/',
 
     'category': 'Extra Tools',
     'license': 'LGPL-3',
-    'version': '14.0.0.2.0',
+    'version': '14.0.0.1.0',
 
     'depends': [
-        'generic_mixin',
-        'kw_mixin',
+        'kw_http_request_log',
     ],
 
     'external_dependencies': {
@@ -21,15 +19,8 @@
 
     'data': [
         'security/ir.model.access.csv',
-
-        'data/ir_cron.xml',
-
-        'views/http_request_log_views.xml',
-        'views/http_request_log_source_views.xml',
     ],
     'demo': [
-        'demo/http_request_source_demo.xml',
-        'demo/http_request_log_demo.xml',
     ],
 
     'installable': True,
