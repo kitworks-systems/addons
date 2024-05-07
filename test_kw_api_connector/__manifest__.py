@@ -1,35 +1,31 @@
 {
-    'name': 'HTTP Request Log',
-    'summary': 'Technical module, that may help to store and manage '
-               'HTTP request logs',
+    'name': 'Test API connector',
+    'summary': 'Technical module that have to be used to test'
+               ' API connector module',
 
     'author': 'Kitworks Systems',
     'website': 'https://kitworks.systems/',
 
     'category': 'Extra Tools',
     'license': 'LGPL-3',
-    'version': '14.0.0.2.0',
+    'version': '14.0.0.1.0',
 
     'depends': [
-        'generic_mixin',
-        'kw_mixin',
+        'kw_api_connector',
     ],
 
     'external_dependencies': {
-        'python': ['html2text', ],
+        'python': [],
     },
 
     'data': [
         'security/ir.model.access.csv',
 
-        'data/ir_cron.xml',
+        'views/test_kw_api_credential_views.xml',
 
-        'views/http_request_log_views.xml',
-        'views/http_request_log_source_views.xml',
+        'data/test_kw_api_connector.xml',
     ],
     'demo': [
-        'demo/http_request_source_demo.xml',
-        'demo/http_request_log_demo.xml',
     ],
 
     'installable': True,

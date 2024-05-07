@@ -23,6 +23,8 @@ class HTTPRequestLog(models.Model):
         string='Request', )
     request_body_file = fields.Binary()
 
+    code = fields.Char()
+
     params = fields.Char()
 
     error = fields.Text()
@@ -34,7 +36,7 @@ class HTTPRequestLog(models.Model):
     delete_by_date = fields.Date(
         default=fields.Date.today, )
     log_source_id = fields.Many2one(
-        comodel_name='kw.http.request.source', string='Source',
+        comodel_name='kw.http.request.log.source', string='Source',
         required=True, )
 
     @staticmethod
@@ -45,10 +47,12 @@ class HTTPRequestLog(models.Model):
             _logger.debug(e)
         return val
 
-    @api.model
     def prepare_value(self, vals):
-        log_source = self.env['kw.http.request.source'].sudo().browse(
-            vals.get('log_source_id'))
+        if self:
+            log_source = self.log_source_id
+        else:
+            log_source = self.env['kw.http.request.log.source'].sudo().browse(
+                vals.get('log_source_id'))
         for x in ['request_body', 'response_body', 'error']:
             if not vals.get(x):
                 continue
@@ -66,33 +70,35 @@ class HTTPRequestLog(models.Model):
     def create(self, vals_list):
         for vals in vals_list:
             vals = self.prepare_value(vals)
-            log_source = self.env['kw.http.request.source'].sudo().browse(
+            log_source = self.env['kw.http.request.log.source'].sudo().browse(
                 vals.get('log_source_id'))
             vals['delete_by_date'] = log_source.get_deletion_date()
         return super().create(vals_list)
 
     def write(self, vals):
-        return super().write(self.prepare_value(vals))
+        for obj in self:
+            super(HTTPRequestLog, obj).write(self.prepare_value(vals))
+        return True
 
     @api.model
     def create_in_new_transaction(self, vals):
         log_source_name = vals.get('log_source_name')
         log_source = False
         if log_source_name:
-            log_source = self.env['kw.http.request.source'].sudo().search(
+            log_source = self.env['kw.http.request.log.source'].sudo().search(
                 [('name', '=', log_source_name)], limit=1)
         if not log_source:
             log_source_id = vals.get('log_source_id')
             if not log_source_id:
                 return False
-            log_source = self.env['kw.http.request.source'].sudo().browse(
+            log_source = self.env['kw.http.request.log.source'].sudo().browse(
                 log_source_id)
         if not log_source.is_log_enabled:
             return False
         vals['delete_by_date'] = log_source.get_deletion_date()
 
         result = False
-        with self._in_new_transaction(no_raise=True) as nself:
+        with self._in_new_transaction(no_raise=False) as nself:
             log = nself.create(vals)
             if log:
                 result = log.id
