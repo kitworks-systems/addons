@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="test_kw_api_connector_1" model="test.kw.api.connector">
+        <field name="name">test_kw_api_connector_localhost</field>
+        <field name="api_url">http://127.0.0.1:14001/</field>
+    </record>
+</odoo>
