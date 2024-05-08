@@ -37,7 +37,7 @@ class HTTPRequestLog(models.Model):
         default=fields.Date.today, )
     log_source_id = fields.Many2one(
         comodel_name='kw.http.request.log.source', string='Source',
-        required=True, )
+        required=True, ondelete='cascade', )
 
     @staticmethod
     def try_convert2formatted_json(val):
