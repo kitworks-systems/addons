@@ -7,7 +7,7 @@
 
     'category': 'Extra Tools',
     'license': 'LGPL-3',
-    'version': '14.0.0.1.0',
+    'version': '14.0.0.2.0',
 
     'depends': [
         'kw_http_request_log',
