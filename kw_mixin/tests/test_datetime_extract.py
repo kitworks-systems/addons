@@ -1,9 +1,9 @@
 import datetime
 
-from odoo.tests.common import SavepointCase
+from odoo.tests.common import TransactionCase
 
 
-class TestDatetimeExtract(SavepointCase):
+class TestDatetimeExtract(TransactionCase):
 
     def test_100_datetime_extract_mixin(self):
         kw_get_date_from_format = \

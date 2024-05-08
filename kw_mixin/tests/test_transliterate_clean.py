@@ -1,7 +1,7 @@
-from odoo.tests.common import SavepointCase
+from odoo.tests.common import TransactionCase
 
 
-class TestDatetimeExtract(SavepointCase):
+class TestDatetimeExtract(TransactionCase):
 
     def test_100_clean_up_mixin(self):
         self.assertEqual(
