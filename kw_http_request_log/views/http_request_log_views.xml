@@ -12,6 +12,7 @@
                 <field name="name"/>
                 <field name="create_date"/>
                 <field name="method" optional="show"/>
+                <field name="code" optional="show"/>
                 <field name="error" optional="show"/>
                 <field name="log_source_id" optional="show"/>
             </tree>
@@ -30,6 +31,7 @@
                         <field name="create_date"/>
                         <field name="delete_by_date"/>
                         <field name="method"/>
+                        <field name="code"/>
                     </group>
                     <group>
                         <field name="headers"/>

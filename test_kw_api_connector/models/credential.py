@@ -1,6 +1,6 @@
 import logging
 
-from odoo import models, fields
+from odoo import models, fields, _
 
 _logger = logging.getLogger(__name__)
 
@@ -18,3 +18,12 @@ class TestApiCredential(models.Model):
 
     def get_api_headers_test_kw_api_connector_localhost(self, **kw):
         return {'Content-Type': 'text/plain', }
+
+    def act_logs_tree(self):
+        return {
+            'name': _('Logs for %s') % self.name,
+            'view_mode': 'tree,form',
+            'res_model': 'kw.http.request.log',
+            'domain': [('log_source_id', '=',
+                        self.kw_http_request_log_source_id.id)],
+            'type': 'ir.actions.act_window', }
