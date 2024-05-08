@@ -1,7 +1,7 @@
-from odoo.tests.common import SavepointCase
+from odoo.tests.common import TransactionCase
 
 
-class TestDatetimeExtract(SavepointCase):
+class TestDatetimeExtract(TransactionCase):
 
     def test_100_translit_ua_mixin(self):
         translitua = self.env['kw.translit.ua.mixin'].translitua
