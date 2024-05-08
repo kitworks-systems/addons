@@ -30,9 +30,10 @@ class YearMixin(models.AbstractModel):
         for obj in self:
             obj.year_str = '{}'.format(obj.year or '')
 
-    @api.model
+    @api.model_create_multi
     def create(self, vals_list):
-        vals_list['year_str'] = '{}'.format(vals_list['year'] or '')
+        for val in vals_list:
+            val['year_str'] = '{}'.format(val['year'] or '')
         return super().create(vals_list)
 
     def write(self, vals):
@@ -92,9 +93,10 @@ class WeekMixin(models.AbstractModel):
         for obj in self:
             obj.week_str = 'W{0:0>2}'.format(obj.week or '')
 
-    @api.model
+    @api.model_create_multi
     def create(self, vals_list):
-        vals_list['week_str'] = 'W{0:0>2}'.format(vals_list['week'] or '')
+        for val in vals_list:
+            val['week_str'] = 'W{0:0>2}'.format(val['week'] or '')
         return super().create(vals_list)
 
     def write(self, vals):
@@ -137,9 +139,10 @@ class MonthMixin(models.AbstractModel):
         for obj in self:
             obj.month_str = '{0:0>2}'.format(obj.month or '')
 
-    @api.model
+    @api.model_create_multi
     def create(self, vals_list):
-        vals_list['month_str'] = '{0:0>2}'.format(vals_list['month'] or '')
+        for val in vals_list:
+            val['month_str'] = '{0:0>2}'.format(val['month'] or '')
         return super().create(vals_list)
 
     def write(self, vals):
@@ -178,9 +181,10 @@ class QuarterMixin(models.AbstractModel):
         for obj in self:
             obj.quarter_str = 'Q{}'.format(obj.quarter or '')
 
-    @api.model
+    @api.model_create_multi
     def create(self, vals_list):
-        vals_list['quarter_str'] = 'Q{}'.format(vals_list['quarter'] or '')
+        for val in vals_list:
+            val['quarter_str'] = 'Q{}'.format(val['quarter'] or '')
         return super().create(vals_list)
 
     def write(self, vals):
