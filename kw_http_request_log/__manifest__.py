@@ -8,7 +8,7 @@
 
     'category': 'Extra Tools',
     'license': 'LGPL-3',
-    'version': '15.0.0.2.0',
+    'version': '15.0.0.4.0',
 
     'depends': [
         'generic_mixin',
