@@ -58,7 +58,7 @@ class HTTPRequestSourceMixin(models.AbstractModel):
 
     kw_http_request_log_source_id = fields.Many2one(
         comodel_name='kw.http.request.log.source', string='Request source',
-        required=True, delegate=True, )
+        required=True, delegate=True, ondelete='cascade', )
 
     @api.model_create_multi
     def create(self, vals_list):
