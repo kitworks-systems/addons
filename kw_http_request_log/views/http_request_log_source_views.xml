@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="kw_http_request_log_source_tree_view" model="ir.ui.view">
+        <field name="name">kw.http.request.log.source.tree</field>
+        <field name="model">kw.http.request.log.source</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="is_log_enabled"/>
+                <field name="log_retention_period"/>
+                <field name="body_text_log_limit"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="kw_http_request_log_source_form_view" model="ir.ui.view">
+        <field name="name">kw.http.request.log.source.form</field>
+        <field name="model">kw.http.request.log.source</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="sequence" invisible="1"/>
+                            <field name="is_log_enabled" widget="boolean_toggle"/>
+                            <field name="log_retention_period"/>
+                            <field name="body_text_log_limit"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+
+    <record id="kw_http_request_log_source_search" model="ir.ui.view">
+        <field name="name">kw.http.request.log.source.search</field>
+        <field name="model">kw.http.request.log.source</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="kw_http_request_log_source_act_window" model="ir.actions.act_window">
+        <field name="name">HTTP Requests source</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">kw.http.request.log.source</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="kw_http_request_log_source_menu"
+              parent="kw_http_request_log_main_menu"
+              action="kw_http_request_log_source_act_window"
+              name="HTTP Request sources"/>
+</odoo>
