@@ -15,7 +15,8 @@ class ApiCredential(models.AbstractModel):
     _inherit = ['kw.http.request.log.source.mixin', ]
     _description = 'Api Credential'
     _sql_constraints = [
-        ('name_uniq', 'unique (name)', '"name" must be unique.'), ]
+        ('name_uniq', 'unique (name)',
+         'Api Credential "name" must be unique'), ]
 
     name = fields.Char()
 

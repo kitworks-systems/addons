@@ -11,7 +11,8 @@ class HTTPRequestLogSource(models.Model):
     _description = 'HTTP Request Log Source'
     _order = 'sequence, id'
     _sql_constraints = [
-        ('name_uniq', 'unique (name)', '"name" must be unique.'), ]
+        ('name_uniq', 'unique (name)',
+         'HTTP Request Log Source "name" must be unique'), ]
 
     name = fields.Char(
         required=True, readonly=True, )
@@ -21,10 +22,12 @@ class HTTPRequestLogSource(models.Model):
         default=1, )
     is_log_enabled = fields.Boolean(
         default=True, string='Log enabled',
-        help='If enabled, all HTTP requests to API will be stored '
+        help='If enabled, all HTTP requests on this source will be stored '
              'in the HTTP Request Log.', )
     log_retention_period = fields.Integer(
-        string='Retention period', help='Log Retention Period in days', )
+        string='Retention time, days',
+        help='Log Retention Period in days, after this date logs will '
+             'be removed', )
     body_text_log_limit = fields.Integer(
         default=100, string='Body limit, Kb',
         help='If request or response body data bigger then limit, '
@@ -43,6 +46,8 @@ class HTTPRequestLogSource(models.Model):
 
     @api.model
     def update_log(self, log_id, vals):
+        if not log_id:
+            return False
         log_model = self.env['kw.http.request.log'].sudo()
         return log_model.write_in_new_transaction(log_id, vals)
 
@@ -66,3 +71,10 @@ class HTTPRequestSourceMixin(models.AbstractModel):
                         'name': vals.get('name'), }).id
 
         return super().create(vals_list)
+
+    def kw_http_request_log_create(self, vals):
+        self.ensure_one()
+        return self.kw_http_request_log_source_id.create_log(vals)
+
+    def kw_http_request_log_update(self, log_id, vals):
+        return self.kw_http_request_log_source_id.update_log(log_id, vals)
