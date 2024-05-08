@@ -1,21 +1,24 @@
 {
-    'name': 'Mixins',
-    'summary': 'Technical module, that implements some functions',
+    'name': 'API connector',
+    'summary': 'Technical module, that may help to create API connector',
 
     'author': 'Kitworks Systems',
     'website': 'https://kitworks.systems/',
 
     'category': 'Extra Tools',
     'license': 'LGPL-3',
-    'version': '15.0.1.2.0',
+    'version': '15.0.0.1.0',
 
     'depends': [
-        'base',
+        'kw_http_request_log',
     ],
 
-    'external_dependencies': {'python': [], },
+    'external_dependencies': {
+        'python': ['html2text', ],
+    },
 
     'data': [
+        'security/ir.model.access.csv',
     ],
     'demo': [
     ],
@@ -29,7 +32,5 @@
         'static/description/icon.png',
     ],
 
-    'price': 0,
-    'currency': 'EUR',
 
 }

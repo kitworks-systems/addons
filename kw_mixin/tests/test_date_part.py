@@ -1,9 +1,9 @@
 import datetime
 
-from odoo.tests.common import SavepointCase
+from odoo.tests.common import TransactionCase
 
 
-class TestDatePart(SavepointCase):
+class TestDatePart(TransactionCase):
 
     def test_100_year_mixin(self):
         get_year = self.env['kw.year.mixin'].get_year
