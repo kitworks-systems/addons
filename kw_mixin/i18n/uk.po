@@ -20,29 +20,29 @@ msgstr ""
 #: code:addons/kw_mixin/models/date_part.py:0
 #, python-format
 msgid "April"
-msgstr ""
+msgstr "Квітень"
 
 #. module: kw_mixin
 #: code:addons/kw_mixin/models/date_part.py:0
 #, python-format
 msgid "August"
-msgstr ""
+msgstr "Серпень"
 
 #. module: kw_mixin
 #: model:ir.model,name:kw_mixin.model_kw_clean_up_mixin
 msgid "Clean up Mixin"
-msgstr ""
+msgstr "Міксін очищення"
 
 #. module: kw_mixin
 #: model:ir.model,name:kw_mixin.model_kw_dow_mixin
 msgid "Day of week Mixin"
-msgstr ""
+msgstr "Міксін день тижня"
 
 #. module: kw_mixin
 #: code:addons/kw_mixin/models/date_part.py:0
 #, python-format
 msgid "December"
-msgstr ""
+msgstr "Грудень"
 
 #. module: kw_mixin
 #: model:ir.model.fields,field_description:kw_mixin.field_kw_clean_up_mixin__display_name
@@ -54,24 +54,24 @@ msgstr ""
 #: model:ir.model.fields,field_description:kw_mixin.field_kw_week_mixin__display_name
 #: model:ir.model.fields,field_description:kw_mixin.field_kw_year_mixin__display_name
 msgid "Display Name"
-msgstr ""
+msgstr "Відображуване ім'я"
 
 #. module: kw_mixin
 #: model:ir.model,name:kw_mixin.model_kw_datetime_extract_mixin
 msgid "Extract date or datetime"
-msgstr ""
+msgstr "Витягнути дату або дату й час"
 
 #. module: kw_mixin
 #: code:addons/kw_mixin/models/date_part.py:0
 #, python-format
 msgid "February"
-msgstr ""
+msgstr "Лютий"
 
 #. module: kw_mixin
 #: code:addons/kw_mixin/models/date_part.py:0
 #, python-format
 msgid "Friday"
-msgstr ""
+msgstr "П'ятниця"
 
 #. module: kw_mixin
 #: model:ir.model.fields,field_description:kw_mixin.field_kw_clean_up_mixin__id
@@ -83,25 +83,25 @@ msgstr ""
 #: model:ir.model.fields,field_description:kw_mixin.field_kw_week_mixin__id
 #: model:ir.model.fields,field_description:kw_mixin.field_kw_year_mixin__id
 msgid "ID"
-msgstr ""
+msgstr "ID"
 
 #. module: kw_mixin
 #: code:addons/kw_mixin/models/date_part.py:0
 #, python-format
 msgid "January"
-msgstr ""
+msgstr "Січень"
 
 #. module: kw_mixin
 #: code:addons/kw_mixin/models/date_part.py:0
 #, python-format
 msgid "July"
-msgstr ""
+msgstr "Липень"
 
 #. module: kw_mixin
 #: code:addons/kw_mixin/models/date_part.py:0
 #, python-format
 msgid "June"
-msgstr ""
+msgstr "Червень"
 
 #. module: kw_mixin
 #: model:ir.model.fields,field_description:kw_mixin.field_kw_clean_up_mixin____last_update
@@ -113,147 +113,147 @@ msgstr ""
 #: model:ir.model.fields,field_description:kw_mixin.field_kw_week_mixin____last_update
 #: model:ir.model.fields,field_description:kw_mixin.field_kw_year_mixin____last_update
 msgid "Last Modified on"
-msgstr ""
+msgstr "Модифіковано"
 
 #. module: kw_mixin
 #: code:addons/kw_mixin/models/date_part.py:0
 #, python-format
 msgid "March"
-msgstr ""
+msgstr "Березень"
 
 #. module: kw_mixin
 #: code:addons/kw_mixin/models/date_part.py:0
 #, python-format
 msgid "May"
-msgstr ""
+msgstr "Травень"
 
 #. module: kw_mixin
 #: code:addons/kw_mixin/models/date_part.py:0
 #, python-format
 msgid "Monday"
-msgstr ""
+msgstr "Понеділок"
 
 #. module: kw_mixin
 #: model:ir.model.fields,field_description:kw_mixin.field_kw_month_mixin__month
 msgid "Month"
-msgstr ""
+msgstr "Місяць"
 
 #. module: kw_mixin
 #: model:ir.model.fields,field_description:kw_mixin.field_kw_month_mixin__month_str
 msgid "Month (xx)"
-msgstr ""
+msgstr "Місяць (хх)"
 
 #. module: kw_mixin
 #: model:ir.model,name:kw_mixin.model_kw_month_mixin
 msgid "Month mixin"
-msgstr ""
+msgstr "Міксин місяцю"
 
 #. module: kw_mixin
 #: code:addons/kw_mixin/models/date_part.py:0
 #, python-format
 msgid "November"
-msgstr ""
+msgstr "Листопад"
 
 #. module: kw_mixin
 #: code:addons/kw_mixin/models/date_part.py:0
 #, python-format
 msgid "October"
-msgstr ""
+msgstr "Жовтень"
 
 #. module: kw_mixin
 #: model:ir.model.fields,field_description:kw_mixin.field_kw_quarter_mixin__quarter
 msgid "Quarter"
-msgstr ""
+msgstr "Квартал"
 
 #. module: kw_mixin
 #: model:ir.model.fields,field_description:kw_mixin.field_kw_quarter_mixin__quarter_str
 msgid "Quarter (Qx)"
-msgstr ""
+msgstr "Квартал (Qx)"
 
 #. module: kw_mixin
 #: model:ir.model,name:kw_mixin.model_kw_quarter_mixin
 msgid "Quarter mixin"
-msgstr ""
+msgstr "Міксин кварталу"
 
 #. module: kw_mixin
 #: code:addons/kw_mixin/models/date_part.py:0
 #, python-format
 msgid "Saturday"
-msgstr ""
+msgstr "Субота"
 
 #. module: kw_mixin
 #: code:addons/kw_mixin/models/date_part.py:0
 #, python-format
 msgid "September"
-msgstr ""
+msgstr "Вересень"
 
 #. module: kw_mixin
 #: code:addons/kw_mixin/models/date_part.py:0
 #, python-format
 msgid "Sunday"
-msgstr ""
+msgstr "Неділя"
 
 #. module: kw_mixin
 #: code:addons/kw_mixin/models/date_part.py:0
 #, python-format
 msgid "Thursday"
-msgstr ""
+msgstr "Четвер"
 
 #. module: kw_mixin
 #: model:ir.model,name:kw_mixin.model_kw_translit_ua_mixin
 msgid "Translit UA Mixin"
-msgstr ""
+msgstr "Мінсин укр транслітерації"
 
 #. module: kw_mixin
 #: code:addons/kw_mixin/models/date_part.py:0
 #, python-format
 msgid "Tuesday"
-msgstr ""
+msgstr "Вівторок"
 
 #. module: kw_mixin
 #: code:addons/kw_mixin/models/date_part.py:0
 #, python-format
 msgid "Wednesday"
-msgstr ""
+msgstr "Середа"
 
 #. module: kw_mixin
 #: model:ir.model.fields,field_description:kw_mixin.field_kw_week_mixin__week
 msgid "Week"
-msgstr ""
+msgstr "Тиждень"
 
 #. module: kw_mixin
 #: model:ir.model.fields,field_description:kw_mixin.field_kw_week_mixin__week_str
 msgid "Week (Wxx)"
-msgstr ""
+msgstr "Тиждень (Wxx)"
 
 #. module: kw_mixin
 #: model:ir.model,name:kw_mixin.model_kw_week_mixin
 msgid "Week Mixin"
-msgstr ""
+msgstr "Міксин тижня"
 
 #. module: kw_mixin
 #: code:addons/kw_mixin/models/date_part.py:0
 #, python-format
 msgid "Wrong month value: must be from 1 to 12"
-msgstr ""
+msgstr "Неправильне значення місяця: має бути від 1 до 12"
 
 #. module: kw_mixin
 #: code:addons/kw_mixin/models/date_part.py:0
 #, python-format
 msgid "Wrong quarter value: must be from 1 to 4"
-msgstr ""
+msgstr "Неправильне значення чверті: має бути від 1 до 4"
 
 #. module: kw_mixin
 #: model:ir.model.fields,field_description:kw_mixin.field_kw_year_mixin__year
 msgid "Year"
-msgstr ""
+msgstr "Рік"
 
 #. module: kw_mixin
 #: model:ir.model.fields,field_description:kw_mixin.field_kw_year_mixin__year_str
 msgid "Year (xxxx)"
-msgstr ""
+msgstr "Рік (хххх)"
 
 #. module: kw_mixin
 #: model:ir.model,name:kw_mixin.model_kw_year_mixin
 msgid "Year Mixin"
-msgstr ""
+msgstr "Міксин року"
