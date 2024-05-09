@@ -1,0 +1,16 @@
+html .o_web_client .o_content .table-responsive thead th:first-child:has(input[type="checkbox"]),
+html .o_web_client .o_content .table-responsive tbody td:first-child:has(input[type="checkbox"]) {
+    position: sticky !important;
+    left: 0px !important;
+    z-index: 2 !important;
+}
+
+html .o_web_client .o_content .table-responsive thead th:first-child {
+    background-color: rgb(233, 236, 239);
+}
+html .o_web_client .o_content .table-responsive tbody td:first-child {
+    background-color: #fff;
+}
+html .o_web_client .o_content .table-responsive tbody .table-info td:first-child {
+    background-color: var(--table-bg);
+}

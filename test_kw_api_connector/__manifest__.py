@@ -1,21 +1,29 @@
 {
-    'name': 'Mixins',
-    'summary': 'Technical module, that implements some functions',
+    'name': 'Test API connector',
+    'summary': 'Technical module that have to be used to test'
+               ' API connector module',
 
     'author': 'Kitworks Systems',
     'website': 'https://kitworks.systems/',
 
     'category': 'Extra Tools',
     'license': 'LGPL-3',
-    'version': '17.0.1.4.0',
+    'version': '17.0.0.2.0',
 
     'depends': [
-        'base',
+        'kw_api_connector',
     ],
 
-    'external_dependencies': {'python': [], },
+    'external_dependencies': {
+        'python': [],
+    },
 
     'data': [
+        'security/ir.model.access.csv',
+
+        'views/test_kw_api_credential_views.xml',
+
+        'data/test_kw_api_connector.xml',
     ],
     'demo': [
     ],
@@ -29,7 +37,5 @@
         'static/description/icon.png',
     ],
 
-    'price': 0,
-    'currency': 'EUR',
 
 }

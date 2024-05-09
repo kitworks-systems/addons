@@ -19,9 +19,9 @@ msgstr ""
 #. module: kw_hide_discuss
 #: model:ir.module.category,name:kw_hide_discuss.module_category_kw_hide_discuss
 msgid "Discuss access"
-msgstr ""
+msgstr "Доступ до Обговорення"
 
 #. module: kw_hide_discuss
 #: model:res.groups,name:kw_hide_discuss.group_kw_hide_discuss_user
 msgid "Discuss user"
-msgstr ""
+msgstr "Користувач Обговорення"

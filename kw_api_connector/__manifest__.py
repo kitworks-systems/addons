@@ -1,23 +1,24 @@
 {
-    'name': 'Hide discuss',
-    'summary': 'Hide Discuss menu from user not in "Discuss user" group',
+    'name': 'API connector',
+    'summary': 'Technical module, that may help to create API connector',
 
     'author': 'Kitworks Systems',
     'website': 'https://kitworks.systems/',
 
-    'category': 'Discuss',
+    'category': 'Extra Tools',
     'license': 'LGPL-3',
-    'version': '17.0.1.3.0',
+    'version': '17.0.0.2.0',
 
     'depends': [
-        'mail',
+        'kw_http_request_log',
     ],
 
-    'external_dependencies': {'python': [], },
+    'external_dependencies': {
+        'python': ['html2text', ],
+    },
 
     'data': [
-        'security/security.xml',
-        'views/menu_view.xml',
+        'security/ir.model.access.csv',
     ],
     'demo': [
     ],
@@ -31,7 +32,5 @@
         'static/description/icon.png',
     ],
 
-    'price': 0,
-    'currency': 'EUR',
 
 }
