@@ -6,13 +6,16 @@ import requests
 from html2text import html2text
 
 from odoo import models, fields, exceptions, _
+from odoo.addons.kw_mixin.tools import use_fname
 
 _logger = logging.getLogger(__name__)
 
 
 class ApiCredential(models.AbstractModel):
     _name = 'kw.api.credential'
-    _inherit = ['kw.http.request.log.source.mixin', ]
+    _inherit = [
+        'generic.mixin.transaction.utils',
+        'kw.http.request.log.source.mixin', ]
     _description = 'Api Credential'
     _sql_constraints = [
         ('name_uniq', 'unique (name)',
@@ -29,40 +32,26 @@ class ApiCredential(models.AbstractModel):
     code = fields.Char(
         related='api_connector_id.name', string='Code', )
 
+    @use_fname()
     def get_api_url(self, ext=''):
-        self.ensure_one()
-        fname = f'get_api_url_{self.code}'
-        if hasattr(self, fname):
-            return getattr(self, fname)(ext)
         return os.path.join(
             self.api_connector_id.api_url.strip('/'), ext.strip('/'))
 
+    @use_fname()
     def get_api_headers(self, **kw):
-        self.ensure_one()
-        fname = f'get_api_headers_{self.code}'
-        if hasattr(self, fname):
-            return getattr(self, fname)(**kw)
-        return {'Content-Type': 'application/json', }
+        return {'Content-Type': 'application/json',
+                'Accept': 'application/json', }
 
+    @use_fname()
     def is_api_success(self, response):
-        self.ensure_one()
-        fname = f'is_api_success_{self.code}'
-        if hasattr(self, fname):
-            return getattr(self, fname)(response)
         return 200 <= response.status_code < 300
 
-    def parse_api_error(self, response):
-        self.ensure_one()
-        fname = f'parse_api_error_{self.code}'
-        if hasattr(self, fname):
-            return getattr(self, fname)(response)
-        return {'message': response.text}
+    @use_fname()
+    def parse_api_error(self, response, **kwargs):
+        return {'message': response.text, }
 
+    @use_fname()
     def action_refresh_api_token(self):
-        self.ensure_one()
-        fname = f'action_refresh_api_token_{self.code}'
-        if hasattr(self, fname):
-            return getattr(self, fname)()
         return False
 
     # pylint: disable=too-many-branches,too-many-return-statements
@@ -74,6 +63,7 @@ class ApiCredential(models.AbstractModel):
             return getattr(self, fname)(
                 method, url, data=None, params=None,
                 headers=None, silent=True, renew_token=False)
+
         if headers is None:
             headers = self.get_api_headers(renew_token=renew_token)
         log = False
@@ -86,6 +76,7 @@ class ApiCredential(models.AbstractModel):
         try:
             response = requests.request(
                 method=method, url=self.get_api_url(url), json=data,
+                allow_redirects=True,
                 params=params, headers=headers, timeout=60, )
         except Exception as e:
             if self.is_log_enabled:
