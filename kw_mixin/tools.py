@@ -17,3 +17,7 @@ def use_fname(*deco_args):
         return wrapper
 
     return decorator
+
+
+def urljoin(*args):
+    return "/".join(map(lambda x: str(x).strip('/'), args))
