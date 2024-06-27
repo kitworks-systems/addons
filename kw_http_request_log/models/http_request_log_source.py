@@ -1,4 +1,6 @@
 import logging
+import os
+from base64 import b64encode
 from datetime import timedelta
 
 from odoo import fields, models, api
@@ -65,10 +67,13 @@ class HTTPRequestSourceMixin(models.AbstractModel):
         for vals in vals_list:
             if 'kw_http_request_log_source_id' in vals:
                 continue
+            name = b64encode(os.urandom(6)).decode('utf-8')
+            name = f'{vals.get("name")}_{name}'
             if vals.get('name'):
+                vals.get('name')
                 vals['kw_http_request_log_source_id'] = \
                     self.env['kw.http.request.log.source'].sudo().create({
-                        'name': vals.get('name'), }).id
+                        'name': name, }).id
 
         return super().create(vals_list)
 
