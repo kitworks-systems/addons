@@ -41,10 +41,16 @@ class HTTPRequestLog(models.Model):
 
     @staticmethod
     def try_convert2formatted_json(val):
-        try:
-            val = json.dumps(json.loads(val), indent=2, ensure_ascii=False)
-        except Exception as e:
-            _logger.debug(e)
+        if isinstance(val, str):
+            try:
+                val = json.dumps(json.loads(val), indent=2, ensure_ascii=False)
+            except Exception as e:
+                _logger.debug(e)
+        elif isinstance(val, (dict, list)):
+            try:
+                val = json.dumps(val, indent=2, ensure_ascii=False)
+            except Exception as e:
+                _logger.debug(e)
         return val
 
     def prepare_value(self, vals):
@@ -57,13 +63,12 @@ class HTTPRequestLog(models.Model):
             if not vals.get(x):
                 continue
             vals[x] = self.try_convert2formatted_json(vals.get(x))
-            file_field = f'{x}_file'
-            if file_field not in self._fields:
+            if f'{x}_file' not in self._fields:
                 continue
-            if len(vals.get(x)) > log_source.body_text_log_limit * 1024:
-                vals[x] = str.encode(vals[x])
-                vals[file_field] = base64.b64encode(vals[x])
-                vals[x] = ''
+            if len(vals.get(x)) < log_source.body_text_log_limit * 1024:
+                continue
+            vals[f'{x}_file'] = base64.b64encode(str.encode(vals[x]))
+            vals[x] = ''
         return vals
 
     @api.model_create_multi
