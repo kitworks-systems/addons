@@ -7,7 +7,7 @@
 
     'category': 'Extra Tools',
     'license': 'LGPL-3',
-    'version': '14.0.1.5.0',
+    'version': '16.0.1.5.0',
 
     'depends': [
         'base',
