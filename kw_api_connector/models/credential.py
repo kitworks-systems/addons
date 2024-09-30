@@ -85,7 +85,7 @@ class ApiCredential(models.AbstractModel):
             if not silent:
                 raise exceptions.ValidationError(_(
                     'Connector "%(credential)s" connection error: "%(error)s"'
-                    '') % (self.name, e))
+                    '') % {'credential': self.name, 'error': e})
             return False
 
         if self.is_api_success(response):
@@ -133,7 +133,7 @@ class ApiCredential(models.AbstractModel):
 
         if not renew_token and parse_result.get('is_refresh_api_token_needed'):
             if self.action_refresh_api_token():
-                return self.request(
+                return self.api_request(
                     method=method, url=url, data=data, params=params,
                     silent=silent, renew_token=renew_token, )
 
