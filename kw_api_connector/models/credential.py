@@ -28,11 +28,9 @@ class ApiCredential(models.AbstractModel):
     company_id = fields.Many2one(
         comodel_name='res.company', )
     api_connector_id = fields.Many2one(
-        comodel_name='kw.api.connector',
-        required=True, )
+        comodel_name='kw.api.connector', required=True, )
     code = fields.Char(
-        related='api_connector_id.name',
-        store=True, )
+        related='api_connector_id.name', string='Code', )
 
     @use_fname()
     def get_api_url(self, ext=''):

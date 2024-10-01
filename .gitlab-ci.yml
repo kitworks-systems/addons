@@ -1,7 +1,7 @@
-image: registry.crnd.pro/crnd-opensource/docker/odoo-ci-x:16.0-simple
+image: registry.crnd.pro/crnd-opensource/docker/odoo-ci-x:14.0-simple
 
 variables:
-    SERIES_BRANCH: '16.0'
+    SERIES_BRANCH: '14.0'
     ODOO_ADMIN_PASS: admin
     CI_JOB_TOKEN_GIT_HOST: 'gitlab.crnd.pro'
 
@@ -9,11 +9,11 @@ variables:
 
 .only-stable-branch: &only_stable_branch
     only:
-        - "16.0"
+        - "14.0"
 
 .only-dev-branch: &only_dev_branch
     only:
-        - /^16.0-.*$/
+        - /^14.0-.*$/
 
 .except-auto-commits: &except_auto_commits
     except:
@@ -43,7 +43,7 @@ build_env:
         - python3 --version
         - odoo-helper --version
         - odoo-helper status --tools-versions --ci-tools-versions
-        - echo "Checking branch compatability $CI_COMMIT_BRANCH" && [[ "$CI_COMMIT_BRANCH" =~ ^16.0(-.*)?$ ]]
+        - echo "Checking branch compatability $CI_COMMIT_BRANCH" && [[ "$CI_COMMIT_BRANCH" =~ ^14.0(-.*)?$ ]]
 
 flake8:
     stage: static-test
@@ -99,7 +99,7 @@ ensure-icons:
 
 
 tests:
-    image: registry.crnd.pro/crnd-opensource/docker/odoo-ci-x:16.0-ci
+    image: registry.crnd.pro/crnd-opensource/docker/odoo-ci-x:14.0-ci
     stage: test
     <<: *pip_cache_definition
     before_script:
@@ -117,7 +117,7 @@ tests:
         - /tmp/odoo_tests/
 
 test_installation_no_demo:
-    image: registry.crnd.pro/crnd-opensource/docker/odoo-ci-x:16.0-ci
+    image: registry.crnd.pro/crnd-opensource/docker/odoo-ci-x:14.0-ci
     stage: test
     variables:
         ODOO_DB_NAME: test-db-clean
@@ -131,7 +131,7 @@ test_installation_no_demo:
     <<: *except_auto_commits
 
 migration_tests:
-    image: registry.crnd.pro/crnd-opensource/docker/odoo-ci-x:16.0-ci
+    image: registry.crnd.pro/crnd-opensource/docker/odoo-ci-x:14.0-ci
     stage: test
     variables:
         ODOO_DB_NAME: test-db
@@ -163,7 +163,7 @@ migration_tests:
         - /tmp/odoo_tests/
 
 tests_EE:
-    image: registry.crnd.pro/crnd/enterprise-addons:16.0-ci
+    image: registry.crnd.pro/crnd/enterprise-addons:14.0-ci
     stage: test
     <<: *pip_cache_definition
     before_script:
@@ -181,7 +181,7 @@ tests_EE:
         - /tmp/odoo_tests/
 
 test_installation_no_demo_EE:
-    image: registry.crnd.pro/crnd/enterprise-addons:16.0-ci
+    image: registry.crnd.pro/crnd/enterprise-addons:14.0-ci
     stage: test
     variables:
         ODOO_DB_NAME: test-db-clean
@@ -195,7 +195,7 @@ test_installation_no_demo_EE:
     <<: *except_auto_commits
 
 migration_tests_EE:
-    image: registry.crnd.pro/crnd/enterprise-addons:16.0-ci
+    image: registry.crnd.pro/crnd/enterprise-addons:14.0-ci
     stage: test
     variables:
         ODOO_DB_NAME: test-db
@@ -225,6 +225,19 @@ migration_tests_EE:
         expire_in: 1 day
         paths:
         - /tmp/odoo_tests/
+
+translation_rate_ua:
+    image: registry.crnd.pro/crnd-opensource/docker/odoo-ci-x:14.0-ci
+    stage: test
+    <<: *only_dev_branch
+    <<: *pip_cache_definition
+    before_script:
+        - odoo-helper link .
+    script:
+        - odoo-helper --use-unbuffer tr rate --lang uk_UA --min-total-rate 80 --min-addon-rate 80 $(odoo-helper addons list .)
+        # - odoo-helper --use-unbuffer tr rate --lang uk_UA $(odoo-helper addons list .)
+    coverage: '/^TOTAL\s+\|\s+\d+\s+\|\s+\d+\s+|\s+(\d+\.\d+)/'
+
 
 .deploy_review_definition: &deploy_review_definition
     stage: deploy
