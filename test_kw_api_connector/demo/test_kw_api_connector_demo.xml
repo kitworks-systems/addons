@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="test_kw_api_connector_demo" model="test.kw.api.connector">
+        <field name="name">Test Connector</field>
+        <field name="api_url">https://api.test.com</field>
+        <field name="is_api_token_used">True</field>
+        <field name="is_api_token_static">False</field>
+    </record>
+</odoo>
