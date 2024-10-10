@@ -9,7 +9,7 @@
     'category': 'Extra Tools',
     'license': 'LGPL-3',
 
-    'version': '15.0.0.2.2',
+    'version': '15.0.0.2.3',
 
     'depends': [
         'kw_api_connector',
