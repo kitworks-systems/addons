@@ -8,8 +8,7 @@
     'category': 'Extra Tools',
     'license': 'LGPL-3',
 
-    'version': '15.0.0.4.1',
-
+    'version': '15.0.0.4.2',
 
     'depends': [
         'kw_http_request_log',
