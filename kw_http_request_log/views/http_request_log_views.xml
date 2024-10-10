@@ -43,16 +43,16 @@
                     <group>
                         <field name="request_body" widget="ace"
                                options="{'mode': 'python'}"
-                               invisible="request_body_file"/>
+                               attrs="{'invisible': [('request_body_file','!=',False)]}"/>
                         <field name="request_body_file"
-                               invisible="not request_body_file"/>
+                               attrs="{'invisible': [('request_body_file','=',False)]}"/>
                     </group>
                     <group>
                         <field name="response_body" widget="ace"
                                options="{'mode': 'python'}"
-                               invisible="response_body_file"/>
+                               attrs="{'invisible': [('response_body_file','!=',False)]}"/>
                         <field name="response_body_file"
-                               invisible="not response_body_file"/>
+                               attrs="{'invisible': [('response_body_file','=',False)]}"/>
                     </group>
                 </group>
             </form>

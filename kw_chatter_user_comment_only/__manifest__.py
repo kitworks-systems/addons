@@ -4,7 +4,7 @@
     'author': 'Kitworks Systems',
     'website': 'https://kitworks.systems/',
 
-    'version': '17.0.0.1.1',
+    'version': '17.0.0.1.2',
     'category': 'Other',
     'depends': [
         'mail',

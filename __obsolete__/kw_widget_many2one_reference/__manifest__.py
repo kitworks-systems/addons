@@ -1,6 +1,6 @@
 {
     'name': "Widget to field many2one_reference",
-    'version': '17.0.2.0.0',
+    'version': '17.0.2.0.1',
 
     'author': 'Kitworks Systems',
     'website': 'https://kitworks.systems/',

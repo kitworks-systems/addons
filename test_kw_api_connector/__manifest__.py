@@ -8,7 +8,8 @@
 
     'category': 'Extra Tools',
     'license': 'LGPL-3',
-    'version': '17.0.0.2.0',
+
+    'version': '17.0.0.2.1',
 
     'depends': [
         'kw_api_connector',
@@ -26,6 +27,9 @@
         'data/test_kw_api_connector.xml',
     ],
     'demo': [
+        'demo/test_kw_api_connector_demo.xml',
+        'demo/kw_http_request_log_source_demo.xml',
+        'demo/test_kw_api_credential_demo.xml',
     ],
 
     'installable': True,
