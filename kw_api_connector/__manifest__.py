@@ -10,7 +10,6 @@
 
     'version': '15.0.0.4.1',
 
-
     'depends': [
         'kw_http_request_log',
     ],
