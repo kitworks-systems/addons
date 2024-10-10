@@ -31,7 +31,7 @@ class HTTPRequestLog(models.Model):
 
     response_body = fields.Text(
         string='Response', )
-
+    response_body_file = fields.Binary()
 
     delete_by_date = fields.Date(
         default=fields.Date.today, )
