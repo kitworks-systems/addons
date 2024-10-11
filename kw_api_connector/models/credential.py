@@ -42,7 +42,8 @@ class ApiCredential(models.AbstractModel):
         fname = f'get_api_headers_{self.code}'
         if hasattr(self, fname):
             return getattr(self, fname)(**kw)
-        return {'Content-Type': 'application/json', }
+        return {'Content-Type': 'application/json',
+                'Accept': 'application/json', }
 
     def is_api_success(self, response):
         self.ensure_one()
@@ -51,11 +52,18 @@ class ApiCredential(models.AbstractModel):
             return getattr(self, fname)(response)
         return 200 <= response.status_code < 300
 
-    def parse_api_error(self, response):
+    # def parse_api_error(self, response):
+    #     self.ensure_one()
+    #     fname = f'parse_api_error_{self.code}'
+    #     if hasattr(self, fname):
+    #         return getattr(self, fname)(response)
+    #     return {'message': response.text}
+    def parse_api_error(self, response, res=None, log=None, silent=True):
         self.ensure_one()
         fname = f'parse_api_error_{self.code}'
         if hasattr(self, fname):
-            return getattr(self, fname)(response)
+            return getattr(self, fname)(response, res=res, log=log,
+                                        silent=silent)
         return {'message': response.text}
 
     def action_refresh_api_token(self):
@@ -73,6 +81,7 @@ class ApiCredential(models.AbstractModel):
         if hasattr(self, fname):
             return getattr(self, fname)(
                 method, url, data=None, params=None,
+                allow_redirects=True,
                 headers=None, silent=True, renew_token=False)
         if headers is None:
             headers = self.get_api_headers(renew_token=renew_token)
@@ -86,6 +95,7 @@ class ApiCredential(models.AbstractModel):
         try:
             response = requests.request(
                 method=method, url=self.get_api_url(url), json=data,
+                allow_redirects=True,
                 params=params, headers=headers, timeout=60, )
         except Exception as e:
             if self.is_log_enabled:
@@ -94,7 +104,7 @@ class ApiCredential(models.AbstractModel):
             if not silent:
                 raise exceptions.ValidationError(_(
                     'Connector "%(credential)s" connection error: "%(error)s"'
-                    '') % (self.name, e))
+                    '') % {'credential': self.name, 'error': e})
             return False
 
         if self.is_api_success(response):
