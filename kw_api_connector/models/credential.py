@@ -81,7 +81,6 @@ class ApiCredential(models.AbstractModel):
         if hasattr(self, fname):
             return getattr(self, fname)(
                 method, url, data=None, params=None,
-                allow_redirects=True,
                 headers=None, silent=True, renew_token=False)
         if headers is None:
             headers = self.get_api_headers(renew_token=renew_token)
