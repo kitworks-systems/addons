@@ -52,12 +52,6 @@ class ApiCredential(models.AbstractModel):
             return getattr(self, fname)(response)
         return 200 <= response.status_code < 300
 
-    # def parse_api_error(self, response):
-    #     self.ensure_one()
-    #     fname = f'parse_api_error_{self.code}'
-    #     if hasattr(self, fname):
-    #         return getattr(self, fname)(response)
-    #     return {'message': response.text}
     def parse_api_error(self, response, res=None, log=None, silent=True):
         self.ensure_one()
         fname = f'parse_api_error_{self.code}'
