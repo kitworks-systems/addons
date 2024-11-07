@@ -5,17 +5,17 @@
               name="HTTP Request Log"/>
 
     <record id="kw_http_request_log_tree_view" model="ir.ui.view">
-        <field name="name">kw.http.request.log.tree</field>
+        <field name="name">kw.http.request.log.list</field>
         <field name="model">kw.http.request.log</field>
         <field name="arch" type="xml">
-            <tree>
+            <list>
                 <field name="name"/>
                 <field name="create_date"/>
                 <field name="method" optional="show"/>
                 <field name="code" optional="show"/>
                 <field name="error" optional="show"/>
                 <field name="log_source_id" optional="show"/>
-            </tree>
+            </list>
         </field>
     </record>
 
@@ -74,7 +74,7 @@
         <field name="name">HTTP Requests Log</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">kw.http.request.log</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">list,form</field>
     </record>
 
     <menuitem id="kw_http_request_log_menu"

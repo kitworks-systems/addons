@@ -7,7 +7,7 @@
 
     'category': 'Discuss',
     'license': 'LGPL-3',
-    'version': '17.0.1.3.1',
+    'version': '18.0.1.3.1',
 
     'depends': [
         'mail',

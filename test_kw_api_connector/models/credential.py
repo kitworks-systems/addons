@@ -22,7 +22,7 @@ class TestApiCredential(models.Model):
     def act_logs_tree(self):
         return {
             'name': _('Logs for %s') % self.name,
-            'view_mode': 'tree,form',
+            'view_mode': 'list,form',
             'res_model': 'kw.http.request.log',
             'domain': [('log_source_id', '=',
                         self.kw_http_request_log_source_id.id)],

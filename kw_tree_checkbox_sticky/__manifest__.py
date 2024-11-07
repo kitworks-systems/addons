@@ -1,7 +1,7 @@
 
 {
     'name': 'Tree Checkbox Sticky',
-    'version': '17.0.0.1.1',
+    'version': '18.0.0.1.1',
     'category': 'Other',
     'depends': [
 
