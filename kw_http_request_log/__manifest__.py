@@ -31,8 +31,8 @@
         'demo/http_request_source_demo.xml',
         'demo/http_request_log_demo.xml',
     ],
-
-    'installable': True,
+    # wait for generic_mixin on 18.0
+    'installable': False,
     'auto_install': False,
     'application': False,
 
