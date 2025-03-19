@@ -3,17 +3,23 @@ import logging
 
 from odoo import models, fields, api, _
 from odoo.exceptions import ValidationError
+from odoo.tools.translate import _lt
 
 _logger = logging.getLogger(__name__)
 
-MONTH_STR = {'1': _('January'), '2': _('February'), '3': _('March'),
-             '4': _('April'), '5': _('May'), '6': _('June'), '7': _('July'),
-             '8': _('August'), '9': _('September'), '10': _('October'),
-             '11': _('November'), '12': _('December'), }
 
-DOW_STR = {'1': _('Monday'), '2': _('Tuesday'), '3': _('Wednesday'),
-           '4': _('Thursday'), '5': _('Friday'), '6': _('Saturday'),
-           '7': _('Sunday'), }
+MONTH_STR = {
+    '1': _lt("January"), '2': _lt("February"), '3': _lt("March"),
+    '4': _lt("April"), '5': _lt("May"), '6': _lt("June"),
+    '7': _lt("July"), '8': _lt("August"), '9': _lt("September"),
+    '10': _lt("October"), '11': _lt("November"), '12': _lt("December"),
+}
+
+DOW_STR = {
+    '1': _lt("Monday"), '2': _lt("Tuesday"), '3': _lt("Wednesday"),
+    '4': _lt("Thursday"), '5': _lt("Friday"), '6': _lt("Saturday"),
+    '7': _lt("Sunday"),
+}
 
 
 class YearMixin(models.AbstractModel):
