@@ -32,7 +32,7 @@
         'demo/http_request_log_demo.xml',
     ],
     # wait for generic_mixin on 18.0
-    'installable': False,
+    'installable': True,
     'auto_install': False,
     'application': False,
 
@@ -40,6 +40,5 @@
         'static/description/cover.png',
         'static/description/icon.png',
     ],
-
 
 }
