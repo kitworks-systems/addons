@@ -3,12 +3,6 @@ import datetime
 from odoo.tests.common import TransactionCase
 from odoo.exceptions import ValidationError
 
-import logging
-
-from odoo import fields, models, api, _
-from odoo.exceptions import ValidationError
-
-_logger = logging.getLogger(__name__)
 class TestDatePart(TransactionCase):
 
     def test_100_year_mixin(self):
