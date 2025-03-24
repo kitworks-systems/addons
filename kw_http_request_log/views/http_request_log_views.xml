@@ -1,21 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-    <menuitem id="kw_http_request_log_main_menu"
-              parent="base.menu_custom"
-              name="HTTP Request Log"/>
-
     <record id="kw_http_request_log_tree_view" model="ir.ui.view">
-        <field name="name">kw.http.request.log.list</field>
+        <field name="name">kw.http.request.log.tree</field>
         <field name="model">kw.http.request.log</field>
         <field name="arch" type="xml">
-            <list>
+            <tree>
                 <field name="name"/>
                 <field name="create_date"/>
-                <field name="method" optional="show"/>
-                <field name="code" optional="show"/>
-                <field name="error" optional="show"/>
-                <field name="log_source_id" optional="show"/>
-            </list>
+                <field name="method" invisible="[(method == False)]"/>
+                <field name="code" invisible="[(code == False)]"/>
+                <field name="error" invisible="[(error == False)]"/>
+                <field name="log_source_id" invisible="[(log_source_id == False)]"/>
+            </tree>
         </field>
     </record>
 
@@ -30,9 +26,15 @@
                         <field name="log_source_id"/>
                         <field name="create_date"/>
                         <field name="delete_by_date"/>
-                        <field name="method"/>
-                        <field name="code"/>
+                        <field name="method" invisible="[(method == False)]"/>
+                        <field name="code" invisible="[(code == False)]"/>
+                        <field name="create_date"/>
+                        <field name="write_date" groups="base.group_no_one"/>
+                        <field name="process_time" invisible="[(process_time == False)]" groups="base.group_no_one"/>
+                        <field name="log_process_time"/>
+                        <field name="type" invisible="1"/>
                     </group>
+
                     <group>
                         <field name="headers"/>
                         <field name="error"/>
@@ -42,17 +44,23 @@
                 <group>
                     <group>
                         <field name="request_body" widget="ace"
-                               options="{'mode': 'python'}"
-                               invisible = 'response_body_file != False'/>
+                               invisible="[(request_body_file != False) | (type != 'json')]"
+                               options="{'mode': 'python'}"/>
+                        <field name="request_body_xml" widget="ace"
+                               invisible="[(request_body_file != False) | (type != 'xml')]"
+                               options="{'mode': 'xml'}"/>
                         <field name="request_body_file"
-                               invisible = 'response_body_file == False'/>
+                               invisible="[(request_body_file == False)]"/>
                     </group>
                     <group>
                         <field name="response_body" widget="ace"
                                options="{'mode': 'python'}"
-                               invisible = 'response_body_file != False'/>
+                               invisible="[(response_body_file != False) | (type != 'json')]"/>
+                        <field name="response_body_xml" widget="ace"
+                               options="{'mode': 'xml'}"
+                               invisible="[(response_body_file != False) | (type != 'xml')]"/>
                         <field name="response_body_file"
-                               invisible = 'response_body_file == False'/>
+                               invisible="[(response_body_file == False)]"/>
                     </group>
                 </group>
             </form>
@@ -74,8 +82,12 @@
         <field name="name">HTTP Requests Log</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">kw.http.request.log</field>
-        <field name="view_mode">list,form</field>
+        <field name="view_mode">tree,form</field>
     </record>
+
+    <menuitem id="kw_http_request_log_main_menu"
+              parent="base.menu_custom"
+              name="HTTP Request Log"/>
 
     <menuitem id="kw_http_request_log_menu"
               parent="kw_http_request_log_main_menu"

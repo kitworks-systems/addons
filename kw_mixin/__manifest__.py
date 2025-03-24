@@ -1,6 +1,15 @@
 {
     'name': 'Mixins',
-    'summary': 'Technical module, that implements some functions',
+    'summary': '''
+        Technical module that provides a set of reusable mixins
+        for Odoo models.
+        Includes functionality for:
+        * Year-based operations and computations
+        * Week number handling and week-based calculations
+        * Month-based operations and validations
+        * Quarter-based operations and validations
+        * Day of week utilities and name conversions
+    ''',
 
     'author': 'Kitworks Systems',
     'website': 'https://kitworks.systems/',

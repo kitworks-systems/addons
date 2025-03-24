@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
+
     <record id="kw_http_request_log_source_tree_view" model="ir.ui.view">
-        <field name="name">kw.http.request.log.source.list</field>
+        <field name="name">kw.http.request.log.source.tree</field>
         <field name="model">kw.http.request.log.source</field>
         <field name="arch" type="xml">
-            <list>
+            <tree>
                 <field name="name"/>
+                <field name="type"/>
                 <field name="is_log_enabled"/>
                 <field name="log_retention_period"/>
                 <field name="body_text_log_limit"/>
-            </list>
+            </tree>
         </field>
     </record>
 
@@ -22,6 +24,7 @@
                     <group>
                         <group>
                             <field name="name"/>
+                            <field name="type"/>
                             <field name="sequence" invisible="1"/>
                             <field name="is_log_enabled" widget="boolean_toggle"/>
                             <field name="log_retention_period"/>
@@ -48,7 +51,7 @@
         <field name="name">HTTP Requests source</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">kw.http.request.log.source</field>
-        <field name="view_mode">list,form</field>
+        <field name="view_mode">tree,form</field>
     </record>
 
     <menuitem id="kw_http_request_log_source_menu"

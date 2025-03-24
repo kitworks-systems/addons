@@ -2,19 +2,19 @@ import datetime
 import logging
 
 from odoo import models, fields, api, _
+from odoo.tools.translate import _lt
 from odoo.exceptions import ValidationError
 
 _logger = logging.getLogger(__name__)
 
+MONTH_STR = {'1': _lt('January'), '2': _lt('February'), '3': _lt('March'),
+             '4': _lt('April'), '5': _lt('May'), '6': _lt('June'), '7': _lt('July'),
+             '8': _lt('August'), '9': _lt('September'), '10': _lt('October'),
+             '11': _lt('November'), '12': _lt('December'), }
 
-MONTH_STR = {'1': 'January', '2': 'February', '3': 'March',
-             '4': 'April', '5': 'May', '6': 'June', '7': 'July',
-             '8': 'August', '9': 'September', '10': 'October',
-             '11': 'November', '12': 'December', }
-
-DOW_STR = {'1': 'Monday', '2': 'Tuesday', '3': 'Wednesday',
-           '4': 'Thursday', '5': 'Friday', '6': 'Saturday',
-           '7': 'Sunday', }
+DOW_STR = {'1': _lt('Monday'), '2': _lt('Tuesday'), '3': _lt('Wednesday'),
+           '4': _lt('Thursday'), '5': _lt('Friday'), '6': _lt('Saturday'),
+           '7': _lt('Sunday'), }
 
 
 class YearMixin(models.AbstractModel):
@@ -22,11 +22,22 @@ class YearMixin(models.AbstractModel):
     _description = 'Year Mixin'
 
     year = fields.Integer(
-        required=True, index=True)
+        required=True,
+        index=True,
+        help="The year value in YYYY format. Used for date-based operations "
+             "and filtering. This field is required and indexed for "
+             "efficient searching."
+    )
     year_str = fields.Char(
-        compute='_compute_year', string='Year (xxxx)', store=True, )
+        compute='_compute_year',
+        string='Year (xxxx)',
+        store=True,
+        help="String representation of the year in YYYY format. "
+             "This field is computed from the year field and stored "
+             "for display and reporting purposes."
+    )
 
-    @api.depends('year', )
+    @api.depends('year')
     def _compute_year(self):
         for obj in self:
             obj.year_str = '{}'.format(obj.year or '')
@@ -85,11 +96,22 @@ class WeekMixin(models.AbstractModel):
     _description = 'Week Mixin'
 
     week = fields.Integer(
-        required=True, index=True)
+        required=True,
+        index=True,
+        help="The ISO week number (1-53). Used for week-based operations "
+             "and reporting. This field is required and indexed for "
+             "efficient searching."
+    )
     week_str = fields.Char(
-        compute='_compute_week', string='Week (Wxx)', store=True, )
+        compute='_compute_week',
+        string='Week (Wxx)',
+        store=True,
+        help="String representation of the week number in 'Wxx' format "
+             "(e.g., W01, W52). This field is computed from the week field "
+             "and stored for display and reporting purposes."
+    )
 
-    @api.depends('week', )
+    @api.depends('week')
     def _compute_week(self):
         for obj in self:
             obj.week_str = 'W{0:0>2}'.format(obj.week or '')
@@ -110,8 +132,8 @@ class WeekMixin(models.AbstractModel):
         if isinstance(date, (datetime.datetime, datetime.date)):
             return int(date.strftime('%V'))
         if isinstance(date, str):
-            return int(
-                datetime.datetime.strptime(date, '%Y-%m-%d').strftime('%V'))
+            dt = datetime.datetime.strptime(date, '%Y-%m-%d')
+            return int(dt.strftime('%V'))
         return False
 
     @staticmethod
@@ -131,11 +153,22 @@ class MonthMixin(models.AbstractModel):
     _description = 'Month mixin'
 
     month = fields.Integer(
-        required=True, index=True)
+        required=True,
+        index=True,
+        help="The month number (1-12). Used for month-based operations "
+             "and filtering. This field is required, indexed, and validated "
+             "to ensure values are within the valid range."
+    )
     month_str = fields.Char(
-        compute='_compute_month', string='Month (xx)', store=True, )
+        compute='_compute_month',
+        string='Month (xx)',
+        store=True,
+        help="String representation of the month in 'xx' format "
+             "(e.g., 01, 12). This field is computed from the month field "
+             "and stored for display and reporting purposes."
+    )
 
-    @api.depends('month', )
+    @api.depends('month')
     def _compute_month(self):
         for obj in self:
             obj.month_str = '{0:0>2}'.format(obj.month or '')
@@ -155,12 +188,12 @@ class MonthMixin(models.AbstractModel):
     def get_month(date):
         return datetime.datetime.strptime(date, '%Y-%m-%d').month
 
-    @api.constrains('month', )
+    @api.constrains('month')
     def _constrains_month(self):
         for obj in self:
-            if obj.month and (not 1 <= obj.month <= 12):
-                raise ValidationError(
-                    _('Wrong month value: must be from 1 to 12'))
+            if not 1 <= obj.month <= 12:
+                msg = _('Wrong month value: must be from 1 to 12')
+                raise ValidationError(msg)
 
     @staticmethod
     def get_default_month():
@@ -173,11 +206,22 @@ class QuarterMixin(models.AbstractModel):
     _description = 'Quarter mixin'
 
     quarter = fields.Integer(
-        required=True, index=True)
+        required=True,
+        index=True,
+        help="The quarter number (1-4). Used for quarterly operations "
+             "and reporting. This field is required, indexed, and validated "
+             "to ensure values are within the valid range."
+    )
     quarter_str = fields.Char(
-        compute='_compute_quarter', string='Quarter (Qx)', store=True, )
+        compute='_compute_quarter',
+        string='Quarter (Qx)',
+        store=True,
+        help="String representation of the quarter in 'Qx' format "
+             "(e.g., Q1, Q4). This field is computed from the quarter field "
+             "and stored for display and reporting purposes."
+    )
 
-    @api.depends('quarter', )
+    @api.depends('quarter')
     def _compute_quarter(self):
         for obj in self:
             obj.quarter_str = 'Q{}'.format(obj.quarter or '')
@@ -198,9 +242,9 @@ class QuarterMixin(models.AbstractModel):
         date = (datetime.datetime.strptime(date, '%Y-%m-%d').month - 1)
         return date // 3 + 1
 
-    @api.constrains('quarter', )
+    @api.constrains('quarter')
     def _constrains_quarter(self):
         for obj in self:
-            if obj.quarter and (not 1 <= obj.quarter <= 4):
-                raise ValidationError(
-                    _('Wrong quarter value: must be from 1 to 4'))
+            if not 1 <= obj.quarter <= 4:
+                msg = _('Wrong quarter value: must be from 1 to 4')
+                raise ValidationError(msg)

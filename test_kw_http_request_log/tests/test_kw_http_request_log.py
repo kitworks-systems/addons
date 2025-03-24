@@ -1,13 +1,15 @@
 from datetime import timedelta
 from odoo import registry, fields
 from odoo.tests import TransactionCase
+from odoo.modules.registry import Registry
 
 
 class TestHTTPRequestLog(TransactionCase):
 
     def setUp(self):
         super().setUp()
-        with registry(self.env.cr.dbname).cursor() as cr1:
+        # with registry(self.env.cr.dbname).cursor() as cr1:
+        with Registry(self.env.cr.dbname).cursor() as cr1:
             env1 = self.env(cr=cr1)
             log_source = env1['test.log.source'].create({
                 'name': 'Test Source Log',
@@ -20,7 +22,8 @@ class TestHTTPRequestLog(TransactionCase):
         self.env.invalidate_all()
 
     def test_create_log(self):
-        with registry(self.env.cr.dbname).cursor() as cr1:
+        # with registry(self.env.cr.dbname).cursor() as cr1:
+        with Registry(self.env.cr.dbname).cursor() as cr1:
             env1 = self.env(cr=cr1)
             log = env1['kw.http.request.log'].create({
                 'name': 'https://test.com',
@@ -49,7 +52,8 @@ class TestHTTPRequestLog(TransactionCase):
             self.assertEqual(log.code, '200')
 
     def test_create_log_with_large_body(self):
-        with registry(self.env.cr.dbname).cursor() as cr1:
+        # with registry(self.env.cr.dbname).cursor() as cr1:
+        with Registry(self.env.cr.dbname).cursor() as cr1:
             env1 = self.env(cr=cr1)
             large_body = 'x' * 11 * 1024  # More than body_text_log_limit
             log = env1['kw.http.request.log'].create({
@@ -98,13 +102,15 @@ class TestHTTPRequestLog(TransactionCase):
         log_model = self.env['kw.http.request.log']
         log_model.write_in_new_transaction(log_id, {'code': '500'})
 
-        with registry(self.env.cr.dbname).cursor() as cr1:
+        # with registry(self.env.cr.dbname).cursor() as cr1:
+        with Registry(self.env.cr.dbname).cursor() as cr1:
             env1 = self.env(cr=cr1)
             log = env1['kw.http.request.log'].browse(log_id)
             self.assertEqual(log.code, '500')
 
     def test_compute_log_process_time(self):
-        with registry(self.env.cr.dbname).cursor() as cr1:
+        # with registry(self.env.cr.dbname).cursor() as cr1:
+        with Registry(self.env.cr.dbname).cursor() as cr1:
             env1 = self.env(cr=cr1)
             log = env1['kw.http.request.log'].create({
                 'name': 'https://test.com',
@@ -115,13 +121,15 @@ class TestHTTPRequestLog(TransactionCase):
             log_id = log.id
             env1.cr.commit()
 
-        with registry(self.env.cr.dbname).cursor() as cr1:
+        # with registry(self.env.cr.dbname).cursor() as cr1:
+        with Registry(self.env.cr.dbname).cursor() as cr1:
             env1 = self.env(cr=cr1)
             log = env1['kw.http.request.log'].browse(log_id)
             self.assertGreaterEqual(log.log_process_time, 0)
 
     def test_cron_delete_outdated_logs(self):
-        with registry(self.env.cr.dbname).cursor() as cr1:
+        # with registry(self.env.cr.dbname).cursor() as cr1:
+        with Registry(self.env.cr.dbname).cursor() as cr1:
             env1 = self.env(cr=cr1)
             log = env1['kw.http.request.log'].create({
                 'name': 'https://test.com',
@@ -131,7 +139,8 @@ class TestHTTPRequestLog(TransactionCase):
             log_id = log.id
             env1.cr.commit()
 
-        with registry(self.env.cr.dbname).cursor() as cr1:
+        # with registry(self.env.cr.dbname).cursor() as cr1:
+        with Registry(self.env.cr.dbname).cursor() as cr1:
             env1 = self.env(cr=cr1)
             log = env1['kw.http.request.log'].browse(log_id)
             log.write({
@@ -139,18 +148,21 @@ class TestHTTPRequestLog(TransactionCase):
             })
             env1.cr.commit()
 
-        with registry(self.env.cr.dbname).cursor() as cr1:
+        # with registry(self.env.cr.dbname).cursor() as cr1:
+        with Registry(self.env.cr.dbname).cursor() as cr1:
             env1 = self.env(cr=cr1)
             env1['kw.http.request.log'].cron_delete_outdated_logs()
 
-        with registry(self.env.cr.dbname).cursor() as cr1:
+        # with registry(self.env.cr.dbname).cursor() as cr1:
+        with Registry(self.env.cr.dbname).cursor() as cr1:
             env1 = self.env(cr=cr1)
             log = env1['kw.http.request.log'].browse(log_id)
             self.assertFalse(log.exists())
 
     def test_format_html_request_body(self):
         """Test HTML formatting in request body"""
-        with registry(self.env.cr.dbname).cursor() as cr1:
+        # with registry(self.env.cr.dbname).cursor() as cr1:
+        with Registry(self.env.cr.dbname).cursor() as cr1:
             env1 = self.env(cr=cr1)
             html_content = '<div><p>Test</p></div>'
             log = env1['kw.http.request.log'].create({
@@ -162,7 +174,8 @@ class TestHTTPRequestLog(TransactionCase):
             log_id = log.id
             env1.cr.commit()
 
-        with registry(self.env.cr.dbname).cursor() as cr1:
+        # with registry(self.env.cr.dbname).cursor() as cr1:
+        with Registry(self.env.cr.dbname).cursor() as cr1:
             env1 = self.env(cr=cr1)
             log = env1['kw.http.request.log'].browse(log_id)
             self.assertIn('<div>', log.request_body)
@@ -171,7 +184,8 @@ class TestHTTPRequestLog(TransactionCase):
 
     def test_format_different_data_types(self):
         """Test formatting of different data types"""
-        with registry(self.env.cr.dbname).cursor() as cr1:
+        # with registry(self.env.cr.dbname).cursor() as cr1:
+        with Registry(self.env.cr.dbname).cursor() as cr1:
             env1 = self.env(cr=cr1)
             log = env1['kw.http.request.log'].create({
                 'name': 'https://test.com',
@@ -183,7 +197,8 @@ class TestHTTPRequestLog(TransactionCase):
             log_id = log.id
             env1.cr.commit()
 
-        with registry(self.env.cr.dbname).cursor() as cr1:
+        # with registry(self.env.cr.dbname).cursor() as cr1:
+        with Registry(self.env.cr.dbname).cursor() as cr1:
             env1 = self.env(cr=cr1)
             log = env1['kw.http.request.log'].browse(log_id)
             self.assertIn('"test": "data"', log.request_body)

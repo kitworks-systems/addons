@@ -3,7 +3,12 @@ import datetime
 from odoo.tests.common import TransactionCase
 from odoo.exceptions import ValidationError
 
+import logging
 
+from odoo import fields, models, api, _
+from odoo.exceptions import ValidationError
+
+_logger = logging.getLogger(__name__)
 class TestDatePart(TransactionCase):
 
     def test_100_year_mixin(self):
@@ -32,8 +37,8 @@ class TestDatePart(TransactionCase):
         self.assertEqual(get_isoweekday(datetime.datetime(2022, 8, 18)), 4)
         self.assertEqual(get_isoweekday('2022-08-18'), 4)
         self.assertEqual(get_isoweekday(2022), False)
-        self.assertEqual(get_weekday_name(4), 'Thursday')
-        self.assertEqual(get_isoweekday_name('2022-08-18'), 'Thursday')
+        self.assertEqual(str(get_weekday_name(4)), 'Thursday')
+        self.assertEqual(str(get_isoweekday_name('2022-08-18')), 'Thursday')
 
     def test_210_dow_mixin_edge_cases(self):
         get_isoweekday = self.env['kw.dow.mixin'].get_isoweekday
