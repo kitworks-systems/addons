@@ -8,7 +8,7 @@
 
     'category': 'Extra Tools',
     'license': 'LGPL-3',
-    'version': '18.0.0.4.1',
+    'version': '18.0.0.4.7',
 
     'depends': [
         'generic_mixin',
@@ -31,8 +31,9 @@
         'demo/http_request_source_demo.xml',
         'demo/http_request_log_demo.xml',
     ],
+
     # wait for generic_mixin on 18.0
-    'installable': False,
+    'installable': True,
     'auto_install': False,
     'application': False,
 
