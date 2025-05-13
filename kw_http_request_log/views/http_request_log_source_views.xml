@@ -25,7 +25,6 @@
                         <group>
                             <field name="name"/>
                             <field name="type"/>
-                            <field name="sequence" invisible="1"/>
                             <field name="is_log_enabled" widget="boolean_toggle"/>
                             <field name="log_retention_period"/>
                             <field name="body_text_log_limit"/>
