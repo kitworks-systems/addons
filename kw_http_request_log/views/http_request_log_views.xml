@@ -43,23 +43,23 @@
                 <group>
                     <group>
                         <field name="request_body" widget="ace"
-                               invisible="['|', ('request_body_file', '!=', False), ('type', '!=', 'json')]"
+                               invisible="request_body_file or type != 'json'"
                                options="{'mode': 'python'}"/>
                         <field name="request_body_xml" widget="ace"
-                               invisible="['|', ('request_body_file', '!=', False), ('type', '!=', 'xml')]"
+                               invisible="request_body_file or type != 'xml'"
                                options="{'mode': 'xml'}"/>
                         <field name="request_body_file"
-                               invisible="[('request_body_file', '=', False)]"/>
+                               invisible="not request_body_file"/>
                     </group>
                     <group>
                         <field name="response_body" widget="ace"
                                options="{'mode': 'python'}"
-                               invisible="['|', ('response_body_file', '!=', False), ('type', '!=', 'json')]"/>
+                               invisible="response_body_file or type != 'json'"/>
                         <field name="response_body_xml" widget="ace"
                                options="{'mode': 'xml'}"
-                               invisible="['|', ('response_body_file', '!=', False), ('type', '!=', 'xml')]"/>
+                               invisible="response_body_file or type != 'xml'"/>
                         <field name="response_body_file"
-                               invisible="[('response_body_file', '=', False)]"/>
+                               invisible="not response_body_file"/>
                     </group>
                 </group>
             </form>
