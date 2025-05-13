@@ -66,7 +66,6 @@
         </field>
     </record>
 
-
     <record id="kw_http_request_log_search" model="ir.ui.view">
         <field name="name">kw.http.request.log.search</field>
         <field name="model">kw.http.request.log</field>
