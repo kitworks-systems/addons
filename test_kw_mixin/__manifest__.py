@@ -7,7 +7,7 @@
 
     'category': 'Hidden/Tests',
     'license': 'LGPL-3',
-    'version': '18.0.1.0.1',
+    'version': '18.0.1.1.0',
 
     'depends': [
         'kw_mixin',
@@ -24,4 +24,8 @@
     'installable': True,
     'auto_install': False,
     'application': False,
+    'images': [
+        'static/description/cover.png',
+        'static/description/icon.png',
+    ],
 }

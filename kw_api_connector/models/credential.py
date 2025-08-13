@@ -1,153 +1,176 @@
 import json
 import logging
-import os
 
+import html
 import requests
-from html2text import html2text
 
 from odoo import models, fields, exceptions, _
+from odoo.addons.kw_mixin.tools import use_fname
 
 _logger = logging.getLogger(__name__)
 
 
 class ApiCredential(models.AbstractModel):
     _name = 'kw.api.credential'
-    _inherit = ['kw.http.request.log.source.mixin', ]
+    _inherit = [
+        'generic.mixin.transaction.utils',
+        'kw.http.request.log.source.mixin', ]
     _description = 'Api Credential'
     _sql_constraints = [
         ('name_uniq', 'unique (name)',
          'Api Credential "name" must be unique'), ]
 
-    name = fields.Char()
-
+    name = fields.Char(
+        help='Unique identifier for the API credential', )
     active = fields.Boolean(
-        default=True, )
+        default=True,
+        help='Whether this credential is active and can be used', )
     company_id = fields.Many2one(
-        comodel_name='res.company', )
+        comodel_name='res.company',
+        help='Company associated with this API credential', )
     api_connector_id = fields.Many2one(
-        comodel_name='kw.api.connector', required=True, )
+        comodel_name='kw.api.connector',
+        required=True,
+        help='API connector configuration for this credential', )
     code = fields.Char(
-        related='api_connector_id.name', string='Code', )
+        string='Connector name',
+        related='api_connector_id.name',
+        store=True,
+        help='Technical name of the associated API connector', )
+    type = fields.Selection(
+        related='api_connector_id.type',
+        help='Data format used by the API connector', )
 
-    def get_api_url(self, ext=''):
-        self.ensure_one()
-        fname = f'get_api_url_{self.code}'
-        if hasattr(self, fname):
-            return getattr(self, fname)(ext)
-        return os.path.join(
+    @use_fname()
+    def get_api_url(self, ext='', **kwargs):
+        def urljoin(*args):
+            return "/".join(map(lambda x: str(x).strip('/'), args))
+        return urljoin(
             self.api_connector_id.api_url.strip('/'), ext.strip('/'))
 
-    def get_api_headers(self, **kw):
-        self.ensure_one()
-        fname = f'get_api_headers_{self.code}'
-        if hasattr(self, fname):
-            return getattr(self, fname)(**kw)
+    @use_fname()
+    def get_api_headers(self, **kwargs):
         return {'Content-Type': 'application/json',
                 'Accept': 'application/json', }
 
-    def is_api_success(self, response):
-        self.ensure_one()
-        fname = f'is_api_success_{self.code}'
-        if hasattr(self, fname):
-            return getattr(self, fname)(response)
+    @use_fname()
+    def is_api_success(self, response, **kwargs):
         return 200 <= response.status_code < 300
 
-    def parse_api_error(self, response, res=None, log=None, silent=True):
-        self.ensure_one()
-        fname = f'parse_api_error_{self.code}'
-        if hasattr(self, fname):
-            return getattr(self, fname)(response, res=res, log=log,
-                                        silent=silent)
-        return {'message': response.text}
+    @use_fname()
+    def parse_api_error(self, response, **kwargs):
+        return {'message': response.text, }
 
-    def action_refresh_api_token(self):
-        self.ensure_one()
-        fname = f'action_refresh_api_token_{self.code}'
-        if hasattr(self, fname):
-            return getattr(self, fname)()
+    @use_fname()
+    def parse_response(self, response, **kwargs):
+        try:
+            res = response.json()
+        except Exception as e:
+            self.kw_http_request_log_source_id.update_log(
+                kwargs.get('log'),
+                {
+                    'code': response.status_code,
+                    'response_body': response.text,
+                    'error': e,
+                })
+
+            return False
+        return res
+
+    @use_fname()
+    def action_refresh_api_token(self, **kwargs):
         return False
 
     # pylint: disable=too-many-branches,too-many-return-statements
-    def api_request(self, method, url, data=None, params=None,
-                    headers=None, silent=True, renew_token=False):
-        self.ensure_one()
-        fname = f'api_request_{self.code}'
-        if hasattr(self, fname):
-            return getattr(self, fname)(
-                method, url, data=None, params=None,
-                headers=None, silent=True, renew_token=False)
-        if headers is None:
-            headers = self.get_api_headers(renew_token=renew_token)
+    @use_fname()
+    def api_request(
+            self, method, url=False, renew_token=False, silent=True, **kwargs):
         log = False
+        kw = {}
+        for x in ['json', 'data', 'params', 'auth', 'headers']:
+            if kwargs.get(x):
+                kw[x] = kwargs.get(x)
+
+        if 'headers' not in kw:
+            kw['headers'] = self.get_api_headers(renew_token=renew_token)
+
+        full_url = self.get_api_url(url or '')
+
+        data = kwargs.get('data') or kwargs.get('json')
+        if self.type == 'xml' and data:
+            if isinstance(data, bytes):
+                data = data.decode('utf-8')
+            elif isinstance(data, str):
+                data = data.encode('utf-8').decode('utf-8')
+            kw['data'] = data.encode('utf-8')
+        if self.type == 'html':
+            data = html.unescape(data).encode('utf-8').decode('utf-8')
+        # if self.type == 'html' and 'data' in kw:
+        #     kw['data'] = kw['data'].encode('utf-8')
+
         if self.is_log_enabled:
             log = self.kw_http_request_log_source_id.sudo(
             ).create_log({
-                'name': self.get_api_url(url), 'method': method,
-                'headers': headers, 'params': json.dumps(params),
+                'name': full_url,
+                'method': method,
+                'headers': kw['headers'],
+                'params': json.dumps(kwargs.get('params')),
                 'request_body': data, })
+
         try:
+            # _logger.info(f'BEFORE {kw}')
             response = requests.request(
-                method=method, url=self.get_api_url(url), json=data,
-                allow_redirects=True,
-                params=params, headers=headers, timeout=60, )
+                method=method, url=full_url, timeout=60,
+                allow_redirects=True, **kw)
         except Exception as e:
             if self.is_log_enabled:
                 self.kw_http_request_log_source_id.update_log(
-                    log, {'error': e})
+                    log, {
+                        'error': e,
+                        'process_time': fields.Datetime.now()
+                    })
             if not silent:
                 raise exceptions.ValidationError(_(
                     'Connector "%(credential)s" connection error: "%(error)s"'
-                    '') % {'credential': self.name, 'error': e})
+                ) % {'credential': self.name, 'error': e})
             return False
 
         if self.is_api_success(response):
             try:
-                res = response.json()
+                res = self.parse_response(
+                    response=response, log=log, silent=True, )
             except Exception as e:
                 if self.is_log_enabled and log:
                     self.kw_http_request_log_source_id.update_log(
                         log, {'code': response.status_code,
-                              'response_body': response.text, 'error': e, })
+                              'response_body': response.text, 'error': e,
+                              'process_time': fields.Datetime.now()})
                 return False
-
             if self.is_log_enabled and log:
                 self.kw_http_request_log_source_id.update_log(
                     log,
-                    {'code': response.status_code, 'response_body': res, })
+                    {'code': response.status_code,
+                     'response_body': response.text,
+                     'process_time': fields.Datetime.now()})
             return res
 
-        try:
-            res = response.json()
-        except Exception as e:
-            if self.is_log_enabled and log:
-                _logger.debug(e)
-                self.kw_http_request_log_source_id.update_log(
-                    log, {
-                        'code': response.status_code,
-                        'response_body': response.text,
-                        'error': html2text(response.text).split('\n')[0]})
-            if not silent:
-                raise exceptions.ValidationError(_(
-                    'Connector "%(credential)s" connection error: "%(error)s"'
-                    '') % {'credential': self.name,
-                           'error': html2text(response.text)})
-            return False
-
         parse_result = self.parse_api_error(
-            response=response, res=res, log=log, silent=True, )
+            response=response, log=log, silent=True, )
 
         if self.is_log_enabled and log:
             self.kw_http_request_log_source_id.update_log(
                 log, {
                     'code': response.status_code,
                     'response_body': response.text,
-                    'error': parse_result['message']})
+                    'error': parse_result['message'],
+                    'process_time': fields.Datetime.now()})
 
         if not renew_token and parse_result.get('is_refresh_api_token_needed'):
             if self.action_refresh_api_token():
                 return self.api_request(
-                    method=method, url=url, data=data, params=params,
-                    silent=silent, renew_token=renew_token, )
+                    method=method, url=url, data=data,
+                    params=kwargs.get('params'), silent=silent,
+                    renew_token=renew_token, )
 
         if not silent:
             raise exceptions.ValidationError(_(

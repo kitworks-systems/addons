@@ -4,11 +4,11 @@
                'HTTP request logs',
 
     'author': 'Kitworks Systems',
-    'website': 'https://kitworks.systems/',
+    'website': 'https://github.com/kitworks-systems/addons',
 
-    'category': 'Extra Tools',
+    'category': 'Hidden/Tools',
     'license': 'LGPL-3',
-    'version': '18.0.0.4.8',
+    'version': '18.0.0.5.0',
 
     'depends': [
         'generic_mixin',
@@ -16,7 +16,7 @@
     ],
 
     'external_dependencies': {
-        'python': ['html2text', ],
+        'python': [],
     },
 
     'data': [
@@ -38,7 +38,6 @@
     'application': False,
 
     'images': [
-        'static/description/cover.png',
         'static/description/icon.png',
     ],
 

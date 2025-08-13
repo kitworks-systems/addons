@@ -1,4 +1,4 @@
-from odoo import registry
+from odoo.modules.registry import Registry
 from odoo.tests import TransactionCase
 
 
@@ -6,7 +6,7 @@ class TestHttpRequestLog(TransactionCase):
 
     def setUp(self):
         super().setUp()
-        with registry(self.env.cr.dbname).cursor() as cr1:
+        with Registry(self.env.cr.dbname).cursor() as cr1:
             env1 = self.env(cr=cr1)
             log_source = env1['test.log.source'].create({
                 'name': 'Test Source',
@@ -26,7 +26,7 @@ class TestHttpRequestLog(TransactionCase):
             'code': 200,
         })
 
-        with registry(self.env.cr.dbname).cursor() as cr1:
+        with Registry(self.env.cr.dbname).cursor() as cr1:
             env1 = self.env(cr=cr1)
             log = env1['kw.http.request.log'].browse(log_id)
 
@@ -39,7 +39,7 @@ class TestHttpRequestLog(TransactionCase):
             self.assertEqual(log.code, '200')
 
     def test_write_log(self):
-        with registry(self.env.cr.dbname).cursor() as cr1:
+        with Registry(self.env.cr.dbname).cursor() as cr1:
             env1 = self.env(cr=cr1)
             log_source = env1['test.log.source'].browse(
                 self.log_source_id)
@@ -52,7 +52,7 @@ class TestHttpRequestLog(TransactionCase):
             log_source.kw_http_request_log_update(
                 log_id, {'code': 500, })
 
-        with registry(self.env.cr.dbname).cursor() as cr1:
+        with Registry(self.env.cr.dbname).cursor() as cr1:
             env1 = self.env(cr=cr1)
             log = env1['kw.http.request.log'].browse(log_id)
             self.assertEqual(log.code, '500')

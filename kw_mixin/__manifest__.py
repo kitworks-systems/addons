@@ -12,11 +12,11 @@
     ''',
 
     'author': 'Kitworks Systems',
-    'website': 'https://kitworks.systems/',
+    'website': 'https://github.com/kitworks-systems/addons',
 
-    'category': 'Extra Tools',
+    'category': 'Hidden/Tools',
     'license': 'LGPL-3',
-    'version': '18.0.1.6.1',
+    'version': '18.0.1.7.0',
 
     'depends': [
         'base',

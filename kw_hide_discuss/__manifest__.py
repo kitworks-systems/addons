@@ -1,26 +1,27 @@
 {
-    'name': 'Hide discuss',
-    'summary': 'Hide Discuss menu from user not in "Discuss user" group',
+    'name': 'Hide Discuss Menu',
+    'summary': 'Control visibility of Discuss menu based on user groups',
 
     'author': 'Kitworks Systems',
-    'website': 'https://kitworks.systems/',
+    'website': 'https://github.com/kitworks-systems/addons',
 
-    'category': 'Discuss',
+    'category': 'Extra Tools',
     'license': 'LGPL-3',
-    'version': '18.0.1.3.1',
+    'version': '18.0.1.4.0',
 
     'depends': [
         'mail',
     ],
 
-    'external_dependencies': {'python': [], },
+    'external_dependencies': {
+        'python': [],
+    },
 
     'data': [
         'security/security.xml',
         'views/menu_view.xml',
     ],
-    'demo': [
-    ],
+    'demo': [],
 
     'installable': True,
     'auto_install': False,
@@ -33,5 +34,4 @@
 
     'price': 0,
     'currency': 'EUR',
-
 }
