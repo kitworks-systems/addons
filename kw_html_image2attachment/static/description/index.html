@@ -1,0 +1,163 @@
+<section style="max-width: 896px; margin: 0 auto;">
+    <div style="text-align: center;">
+        <h1 style="color:#875A7B;">HTML Image to Attachment</h1>
+    </div>
+    <div style="text-align: center;">
+        <p>
+            <a href="http://www.gnu.org/licenses/lgpl-3.0-standalone.html">
+                <img alt="License: LGPL-3"
+                     src="https://img.shields.io/badge/license-LGPL--3-blue.png"/></a>
+            <a href="https://kitworks.systems/">
+                <img alt="Kitworks Systems"
+                     src="https://img.shields.io/badge/maintainer-Kitworks-purple.png"/></a>
+        </p>
+        <p><br></p>
+    </div>
+</section>
+
+<section style="max-width: 896px; margin: 0 auto;">
+    <div>
+        <p>This module provides functionality to convert images from HTML fields to attachments.
+           It can process both base64-encoded images and external image URLs, making them accessible
+           as Odoo attachments and updating the HTML content accordingly.</p>
+
+        <p>Key features include:</p>
+        <ul>
+            <li>Automatic conversion of external images and base64-encoded images to attachments</li>
+            <li>Configurable task system to process specific models and fields</li>
+            <li>Marking of attachments for tracking and management</li>
+            <li>Cleaning of unused image attachments</li>
+            <li>Support for both batch processing and individual record processing</li>
+        </ul>
+    </div>
+</section>
+
+<section style="max-width: 896px; margin: 0 auto;">
+    <div>
+        <h2 style="color:#875A7B;">Configuration</h2>
+        <p>Setting up the module is straightforward:</p>
+        <ol>
+            <li>Go to Settings -> Technical -> HTML Image to Attachment</li>
+            <li>Create a new task by specifying:
+                <ul>
+                    <li>Name: Task identifier</li>
+                    <li>Model: Target model containing HTML fields</li>
+                    <li>HTML Field: Target field containing images to process</li>
+                </ul>
+            </li>
+            <li>Click "Create Lines" to generate processing lines</li>
+            <li>Use "Execute" button to process individual lines or "Execute All" for batch processing</li>
+        </ol>
+    </div>
+</section>
+
+<section style="max-width: 896px; margin: 0 auto;">
+    <div>
+        <h2 style="color:#875A7B;">Integration Guide</h2>
+        
+        <h3>1. Inheriting the Mixin</h3>
+        <p>To add image processing to your model:</p>
+        <pre><code># models/my_model.py
+from odoo import models, fields
+
+class MyModel(models.Model):
+    _name = 'my.model'
+    _inherit = ['mail.thread', 'kw.html.image2attachment.mixin']
+    
+    name = fields.Char()
+    description = fields.Html()  # HTML field that will be processed
+    other_html_field = fields.Html()  # Another HTML field
+    
+    # Optional: Override html_fields to specify which fields to process
+    @property
+    def html_fields(self):
+        return ['description', 'other_html_field']</code></pre>
+
+        <h3>2. Migration Script</h3>
+        <p>To process existing records during module upgrade, create a migration script:</p>
+        <pre><code># migrations/16.0.1.1.0/post-migrate.py
+from odoo import api, SUPERUSER_ID
+
+def migrate(cr, version):
+    if not version:
+        return
+        
+    env = api.Environment(cr, SUPERUSER_ID, {})
+    
+    # Get all models that inherit kw.html.image2attachment.mixin
+    IrModel = env['ir.model']
+    models = IrModel.search([
+        ('inherited_model_ids.model', '=', 'kw.html.image2attachment.mixin')
+    ])
+    
+    # Process each model
+    tool = env['kw.html_image2attachment.tool']
+    for model in models:
+        if not model.model in env:
+            continue
+            
+        Model = env[model.model]
+        records = Model.search([])
+        
+        # Mark attachments for each record
+        for record in records:
+            tool.mark_attachments(record)
+            
+        # Commit after each model to avoid long transactions
+        env.cr.commit()</code></pre>
+
+        <h3>3. Directory Structure</h3>
+        <p>Your module should have this structure:</p>
+        <pre><code>my_module/
+├── __init__.py
+├── __manifest__.py
+├── models/
+│   ├── __init__.py
+│   └── my_model.py
+└── migrations/
+    └── 16.0.1.1.0/
+        └── post-migrate.py</code></pre>
+
+        <h3>4. Manifest Dependencies</h3>
+        <p>Add the dependency in your module's manifest:</p>
+        <pre><code># __manifest__.py
+{
+    'name': 'My Module',
+    'version': '16.0.1.1.0',
+    'depends': [
+        'base',
+        'kw_html_image2attachment',
+    ],
+    # ...
+}</code></pre>
+    </div>
+</section>
+
+<section style="max-width: 896px; margin: 0 auto;">
+    <div>
+        <h3>Bug Tracker</h3>
+        <p>
+            Bugs are tracked on <a href="https://kitworks.systems/requests">https://kitworks.systems/requests</a>.
+            In case of trouble, please check there if your issue has already
+            been reported.
+        </p>
+    </div>
+</section>
+
+<section style="max-width: 896px; margin: 0 auto;">
+    <div>
+        <h2 style="color: #138c33">Maintainer</h2>
+        <p>KitWorks Systems. Our web site: <a href="https://kitworks.systems">https://kitworks.systems</a></p>
+
+        <p>
+            We can provide you further Odoo Support, Odoo implementation,
+            Odoo customization, Odoo 3rd Party development and integration
+            software, consulting services. Our main goal is to provide the best
+            quality product for you.
+        </p>
+        <p>
+            For any questions
+            <a href="mailto:info@kitworks.systems">contact us</a>.
+        </p>
+    </div>
+</section>

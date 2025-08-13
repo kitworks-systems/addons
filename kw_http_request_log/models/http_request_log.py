@@ -30,7 +30,7 @@ class HTTPRequestLog(models.Model):
              '(<body_text_log_limit), stored directly in this field. For '
              'larger requests, the body is stored in a separate file.')
     request_body_xml = fields.Text(
-        string='Request',
+        string='Request XML',
         compute='_compute_request_body_xml',)
     request_body_file = fields.Binary(
         help='Binary storage for large request bodies that exceed the '
@@ -54,7 +54,7 @@ class HTTPRequestLog(models.Model):
              'body_text_log_limit. Used to prevent database performance '
              'issues with large responses.')
     response_body_xml = fields.Text(
-        string='Response',
+        string='Response XML',
         compute='_compute_response_body_xml',)
     delete_by_date = fields.Date(
         default=fields.Date.today,
@@ -93,14 +93,6 @@ class HTTPRequestLog(models.Model):
                 ).seconds
             else:
                 obj.log_process_time = 0
-
-    def _compute_request_body_xml(self):
-        for obj in self:
-            obj.request_body_xml = obj.request_body
-
-    def _compute_response_body_xml(self):
-        for obj in self:
-            obj.response_body_xml = obj.response_body
 
     @staticmethod
     def try_convert2formatted_json(val):

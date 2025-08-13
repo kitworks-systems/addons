@@ -4,12 +4,11 @@
                ' API connector module',
 
     'author': 'Kitworks Systems',
-    'website': 'https://kitworks.systems/',
+    'website': 'https://github.com/kitworks-systems/addons',
 
-    'category': 'Extra Tools',
+    'category': 'Hidden/Tests',
     'license': 'LGPL-3',
-
-    'version': '18.0.0.2.3',
+    'version': '18.0.0.3.0',
 
     'depends': [
         'kw_api_connector',

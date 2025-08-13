@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem
+            id="kw_html_image2attachment_menu_root"
+            name="HTML Image to Attachment"
+            parent="base.menu_administration"
+            groups="base.group_no_one"
+            sequence="10"/>
+
+    <record id="kw_html_image2attachment_task_view_form" model="ir.ui.view">
+        <field name="name">kw.html.image2attachment.task.form</field>
+        <field name="model">kw.html_image2attachment.task</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_create_lines"
+                            type="object" string="Create lines"/>
+                    <button name="action_clear_lines"
+                            type="object" string="Clear lines"/>
+                </header>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="model_id"/>
+                        <field name="field_id"/>
+                    </group>
+                    <notebook>
+                        <page string="Lines" name="lines">
+                            <field name="line_ids"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="kw_html_image2attachment_task_view_tree" model="ir.ui.view">
+        <field name="name">kw.html.image2attachment.task.tree</field>
+        <field name="model">kw.html_image2attachment.task</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="model_id"/>
+                <field name="field_id"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="kw_html_image2attachment_task_action"
+            model="ir.actions.act_window">
+        <field name="name">HTML Image to Attachment Tasks</field>
+        <field name="res_model">kw.html_image2attachment.task</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem
+            id="kw_html_image2attachment_task_menu"
+            name="Tasks"
+            parent="kw_html_image2attachment_menu_root"
+            action="kw_html_image2attachment_task_action"
+            sequence="10"/>
+</odoo>

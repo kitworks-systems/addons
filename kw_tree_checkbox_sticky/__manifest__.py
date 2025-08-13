@@ -1,15 +1,41 @@
-
 {
     'name': 'Tree Checkbox Sticky',
-    'version': '18.0.0.1.1',
-    'category': 'Other',
-    'depends': [
+    'summary': 'Keep checkbox column fixed while scrolling '
+               'horizontally in list views',
 
+    'author': 'Kitworks Systems',
+    'website': 'https://kitworks.systems/',
+
+    'category': 'Extra Tools',
+    'license': 'LGPL-3',
+    'version': '18.0.0.1.2',
+
+    'depends': [
+        'web',
     ],
-    'license': 'OPL-1',
+
+    'external_dependencies': {
+        'python': [],
+    },
+
     'assets': {
         'web.assets_backend': [
             'kw_tree_checkbox_sticky/static/src/css/checkbox_sticky.css'
         ]
-    }
+    },
+
+    'data': [],
+    'demo': [],
+
+    'installable': True,
+    'auto_install': False,
+    'application': False,
+
+    'images': [
+        'static/description/cover.png',
+        'static/description/icon.png',
+    ],
+
+    'price': 0,
+    'currency': 'EUR',
 }

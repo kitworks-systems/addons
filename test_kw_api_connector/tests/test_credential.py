@@ -1,6 +1,6 @@
 import json
-from unittest.mock import patch, MagicMock
 from contextlib import contextmanager
+from unittest.mock import patch, MagicMock
 import requests
 from odoo.exceptions import ValidationError
 from odoo.tests.common import TransactionCase
@@ -9,7 +9,7 @@ from odoo.tests.common import TransactionCase
 class TestApiCredential(TransactionCase):
 
     def setUp(self):
-        super(TestApiCredential, self).setUp()
+        super().setUp()
         # Loading records from demo data
         self.api_connector = self.env.ref(
             'test_kw_api_connector.test_kw_api_connector_demo')
@@ -17,6 +17,8 @@ class TestApiCredential(TransactionCase):
             'test_kw_api_connector.kw_http_request_log_source_demo')
         self.api_credential = self.env.ref(
             'test_kw_api_connector.test_kw_api_credential_demo')
+        self.api_credential_xml = self.env.ref(
+            'test_kw_api_connector.test_kw_api_credential_xml_demo')
         # Variable to collect logs that need to be deleted
         self.log_ids_to_unlink = []
 
@@ -29,7 +31,7 @@ class TestApiCredential(TransactionCase):
                 logs = log_model.browse(self.log_ids_to_unlink)
                 logs.unlink()
                 new_cr.commit()
-        super(TestApiCredential, self).tearDown()
+        super().tearDown()
 
     @contextmanager
     def get_logs(self, domain):
@@ -37,11 +39,63 @@ class TestApiCredential(TransactionCase):
         and deleting them after the test."""
         with self.env.registry.cursor() as new_cr:
             new_env = self.env(cr=new_cr)
-            logs = self.env['kw.http.request.log'].with_env(new_env) \
-                .search(domain)
+            logs = new_env['kw.http.request.log'].search(domain)
             # Collecting log IDs for later deletion
             self.log_ids_to_unlink.extend(logs.ids)
             yield logs
+
+    @patch('requests.request')
+    def test_api_request_with_xml_type_and_real_data(self, mock_request):
+        """Test api_request with type 'xml' and XML data."""
+        data = '''<request>
+ <item>
+  Test element
+ </item>
+</request>
+'''
+
+        # Configure a mock response with XML data
+        mock_response = MagicMock()
+        mock_response.status_code = 200
+        mock_response.text = '''<response>
+ <status>
+  Success
+ </status>
+</response>
+'''
+        mock_request.return_value = mock_response
+
+        # Execute the api_request method with real data
+        self.api_credential_xml.api_request(
+            method='POST',
+            url='/api/xml-endpoint',
+            data=data
+        )
+
+        # Verify that the data was processed correctly
+        expected_data = data.encode('utf-8')
+        mock_request.assert_called_with(
+            method='POST',
+            url='https://api.test.com/api/xml-endpoint',
+            data=expected_data,
+            allow_redirects=True,
+            headers=self.api_credential_xml.get_api_headers(),
+            timeout=60
+        )
+
+        # Verify logging
+        domain = [
+            ('name', '=', 'https://api.test.com/api/xml-endpoint'),
+            ('method', '=', 'POST')
+        ]
+        with self.get_logs(domain) as logs:
+            self.assertEqual(len(logs), 1)
+            log = logs[0]
+
+            self.assertEqual(log.code, '200')
+            self.assertEqual(log.request_body, data)
+            self.assertEqual(log.response_body, mock_response.text)
+            self.assertFalse(log.error)
 
     @patch('requests.request')
     def test_api_request_successful_get(self, mock_request):
@@ -50,6 +104,7 @@ class TestApiCredential(TransactionCase):
         mock_response.status_code = 200
         response_data = {'status': 'ok', 'data': {'id': 1, 'name': 'Test'}}
         mock_response.json.return_value = response_data
+        mock_response.text = json.dumps(response_data)
         mock_request.return_value = mock_response
 
         # Execute the api_request method without separating request parameters
@@ -67,7 +122,6 @@ class TestApiCredential(TransactionCase):
         mock_request.assert_called_once_with(
             method='GET',
             url='https://api.test.com/items/1',
-            json=None,
             allow_redirects=True,
             params={'expand': 'details'},
             headers=self.api_credential.get_api_headers(),
@@ -84,7 +138,6 @@ class TestApiCredential(TransactionCase):
             log = logs[0]
             self.assertEqual(log.code, '200')
             self.assertFalse(log.request_body)  # Since data=None
-
             # Parse response_body from JSON string into a dictionary
             log_response_body = json.loads(log.response_body)
             self.assertEqual(log_response_body, expected_result)
@@ -108,6 +161,7 @@ class TestApiCredential(TransactionCase):
         mock_response.status_code = 201
         response_data = {'status': 'ok', 'data': {'id': 2, 'name': 'New Item'}}
         mock_response.json.return_value = response_data
+        mock_response.text = json.dumps(response_data)
         mock_request.return_value = mock_response
 
         # Data to be sent
@@ -117,7 +171,7 @@ class TestApiCredential(TransactionCase):
         result = self.api_credential.api_request(
             method='POST',
             url='/items',
-            data=request_data
+            json=request_data
         )
 
         # Verify the result
@@ -130,7 +184,6 @@ class TestApiCredential(TransactionCase):
             url='https://api.test.com/items',
             json=request_data,
             allow_redirects=True,
-            params=None,
             headers=self.api_credential.get_api_headers(),
             timeout=60
         )
@@ -161,7 +214,7 @@ class TestApiCredential(TransactionCase):
         # Set up mock response
         mock_response = MagicMock()
         mock_response.status_code = 400
-        response_text = 'Bad Request'
+        response_text = 'Bad Request\n'
         mock_response.text = response_text
         mock_response.json.side_effect = ValueError('No JSON object')
         mock_request.return_value = mock_response
@@ -177,9 +230,7 @@ class TestApiCredential(TransactionCase):
         mock_request.assert_called_once_with(
             method='GET',
             url='https://api.test.com/items/invalid',
-            json=None,
             allow_redirects=True,
-            params=None,
             headers=self.api_credential.get_api_headers(),
             timeout=60
         )
@@ -195,7 +246,7 @@ class TestApiCredential(TransactionCase):
 
             # Checking the updated fields
             self.assertEqual(log.code, '400')
-            self.assertEqual(log.error, 'Bad Request')
+            self.assertEqual(log.error, 'Bad Request\n')
             self.assertEqual(log.response_body, response_text)
             self.assertFalse(log.request_body)
 
@@ -205,7 +256,7 @@ class TestApiCredential(TransactionCase):
         # Setting up a mock response with a 500 error
         mock_response = MagicMock()
         mock_response.status_code = 500
-        response_text = 'Internal Server Error'
+        response_text = 'Internal Server Error\n'
         mock_response.text = response_text
         mock_response.json.side_effect = ValueError('No JSON object')
         mock_request.return_value = mock_response
@@ -234,7 +285,7 @@ class TestApiCredential(TransactionCase):
 
             # Checking the updated fields
             self.assertEqual(log.code, '500')
-            self.assertEqual(log.error, 'Internal Server Error')
+            self.assertEqual(log.error, 'Internal Server Error\n')
             self.assertEqual(log.response_body, response_text)
             self.assertFalse(log.request_body)
 
@@ -254,9 +305,7 @@ class TestApiCredential(TransactionCase):
         mock_request.assert_called_once_with(
             method='GET',
             url='https://api.test.com/timeout',
-            json=None,
             allow_redirects=True,
-            params=None,
             headers=self.api_credential.get_api_headers(),
             timeout=60
         )
@@ -360,13 +409,15 @@ class TestApiCredential(TransactionCase):
         # First response - 401 Unauthorized
         mock_response_401 = MagicMock()
         mock_response_401.status_code = 401
-        response_text_401 = 'Internal Server Error'
+        response_text_401 = 'Internal Server Error\n'
         mock_response_401.text = response_text_401
 
         # Second response - 200 OK
         mock_response_200 = MagicMock()
         mock_response_200.status_code = 200
-        mock_response_200.json.return_value = {'status': 'success'}
+        response_data_200 = {'status': 'success'}
+        mock_response_200.json.return_value = response_data_200
+        mock_response_200.text = json.dumps(response_data_200)
 
         # Mocking the sequence of responses
         mock_request.side_effect = [mock_response_401, mock_response_200]
@@ -402,13 +453,14 @@ class TestApiCredential(TransactionCase):
             self.assertEqual(len(log_200), 1)
             log_200 = log_200[0]
             self.assertEqual(log_200.error, False)
-            # Parse response_body from JSON string into a dictionary
             log_response_body = json.loads(log_200.response_body)
-            self.assertEqual(log_response_body, {'status': 'success'})
+            self.assertEqual(log_response_body, response_data_200)
+            self.assertEqual(log_200.code, '200')
 
     @patch(
         'odoo.addons.kw_api_connector.models.credential.ApiCredential'
-        '.action_refresh_api_token', return_value=False)
+        '.action_refresh_api_token', return_value=False
+    )
     @patch('requests.request')
     def test_api_request_token_refresh_failure_silent_true(
         self, mock_request, mock_refresh_token
@@ -441,7 +493,8 @@ class TestApiCredential(TransactionCase):
 
     @patch(
         'odoo.addons.kw_api_connector.models.credential.ApiCredential'
-        '.action_refresh_api_token', return_value=False)
+        '.action_refresh_api_token', return_value=False
+    )
     @patch('requests.request')
     def test_api_request_token_refresh_failure_silent_false(
         self, mock_request, mock_refresh_token

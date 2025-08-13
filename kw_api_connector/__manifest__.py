@@ -3,19 +3,18 @@
     'summary': 'Technical module, that may help to create API connector',
 
     'author': 'Kitworks Systems',
-    'website': 'https://kitworks.systems/',
+    'website': 'https://github.com/kitworks-systems/addons',
 
-    'category': 'Extra Tools',
+    'category': 'Hidden/Tools',
     'license': 'LGPL-3',
-
-    'version': '18.0.0.4.2',
+    'version': '18.0.0.5.0',
 
     'depends': [
         'kw_http_request_log',
     ],
 
     'external_dependencies': {
-        'python': ['html2text', ],
+        'python': [],
     },
 
     'data': [

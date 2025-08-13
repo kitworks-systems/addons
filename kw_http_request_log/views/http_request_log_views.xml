@@ -30,8 +30,9 @@
                         <field name="code"/>
                         <field name="create_date"/>
                         <field name="write_date" groups="base.group_no_one"/>
-                        <field name="process_time" groups="base.group_no_one"/>
+                        <field name="process_time" invisible="not process_time" groups="base.group_no_one"/>
                         <field name="log_process_time"/>
+                        <field name="type" invisible="1"/>
                     </group>
 
                     <group>

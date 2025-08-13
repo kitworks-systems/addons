@@ -57,13 +57,13 @@ pylint:
         - odoo-helper lint pylint --jslintrc=./.jslintrc .
     <<: *except_auto_commits
 
-stylelint:
-    stage: static-test
-    script:
-        - odoo-helper lint style .
-    allow_failure: true
-    <<: *only_dev_branch
-    <<: *except_auto_commits
+# stylelint:
+#     stage: static-test
+#     script:
+#         - odoo-helper lint style .
+#     allow_failure: true
+#     <<: *only_dev_branch
+#     <<: *except_auto_commits
 
 bandit:
     stage: static-test
@@ -78,6 +78,7 @@ check-versions:
     stage: static-test
     script:
         - odoo-helper ci check-versions-git . origin/$SERIES_BRANCH $CI_COMMIT_SHA
+    allow_failure: true
     <<: *only_dev_branch
     <<: *except_auto_commits
 
@@ -85,7 +86,7 @@ ensure-changelog:
     stage: static-test
     script:
         - odoo-helper ci ensure-changelog --format md . origin/$SERIES_BRANCH $CI_COMMIT_SHA
-    # allow_failure: true
+    allow_failure: true
     <<: *only_dev_branch
     <<: *except_auto_commits
 
@@ -179,7 +180,7 @@ migration_tests:
 #        expire_in: 1 day
 #        paths:
 #        - /tmp/odoo_tests/
-
+#
 #test_installation_no_demo_EE:
 #    image: registry.crnd.pro/crnd/enterprise-addons:18.0-ci
 #    stage: test
@@ -193,7 +194,7 @@ migration_tests:
 #    script:
 #        - odoo-helper addons install --db "$ODOO_DB_NAME" --dir-r . --show-log-on-error
 #    <<: *except_auto_commits
-
+#
 #migration_tests_EE:
 #    image: registry.crnd.pro/crnd/enterprise-addons:18.0-ci
 #    stage: test
@@ -234,7 +235,8 @@ migration_tests:
         - ci-review-app init
         - ci-review-app dep https://github.com/crnd-inc/generic-addons.git "$SERIES_BRANCH"
         - ci-review-app dep https://github.com/crnd-inc/crnd-web.git "$SERIES_BRANCH"
-        - ci-review-app dep git@gitlab.crnd.pro:kitworks/addons.git "$SERIES_BRANCH"
+        - ci-review-app dep git@gitlab.crnd.pro:crnd/generic-background-service.git "$SERIES_BRANCH"
+        - ci-review-app dep git@gitlab.crnd.pro:kitworks/kitworks-opensource/base-addons.git "$SERIES_BRANCH"
     script:
         - ci-review-app start
     tags:

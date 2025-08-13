@@ -1,6 +1,6 @@
 {
     'name': 'Test KW HTTP Request Log',
-    'version': '18.0.1.1.0',
+    'version': '18.0.1.1.1',
     'category': 'Extra Tools',
     'author': 'Kitworks Systems',
     'website': 'https://kitworks.systems/',
