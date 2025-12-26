@@ -121,7 +121,7 @@ class HTTPRequestLog(models.Model):
         else:
             log_source = self.env['kw.http.request.log.source'].sudo().browse(
                 vals.get('log_source_id'))
-        for x in ['request_body', 'response_body', 'error']:
+        for x in ['request_body', 'response_body', 'error', 'params']:
             if not vals.get(x):
                 continue
             vals[x] = self.try_convert2formatted_json(vals.get(x))

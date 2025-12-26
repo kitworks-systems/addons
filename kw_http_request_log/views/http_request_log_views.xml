@@ -43,6 +43,9 @@
 
                 <group>
                     <group>
+                        <field name="params" widget="ace"
+                               invisible="request_body_file or type != 'json'"
+                               options="{'mode': 'python'}"/>
                         <field name="request_body" widget="ace"
                                invisible="request_body_file or type != 'json'"
                                options="{'mode': 'python'}"/>
