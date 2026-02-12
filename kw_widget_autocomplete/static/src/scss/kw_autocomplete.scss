@@ -1,0 +1,21 @@
+.kw_autocomplete_field {
+    width: 100%;
+
+    .o_input_dropdown {
+        width: 100%;
+
+        .o-autocomplete {
+            width: 100%;
+
+            input {
+                width: 100%;
+            }
+        }
+    }
+
+    .o-autocomplete--dropdown-menu {
+        max-height: 300px;
+        overflow-y: auto;
+        z-index: 1050;
+    }
+}

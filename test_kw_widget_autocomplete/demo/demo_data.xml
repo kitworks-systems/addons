@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <!-- Demo test records -->
+    <record id="autocomplete_test_1" model="kw.autocomplete.test">
+        <field name="name">Test Record 1 - Model Method</field>
+        <field name="country_id" ref="base.ua"/>
+    </record>
+
+    <record id="autocomplete_test_2" model="kw.autocomplete.test">
+        <field name="name">Test Record 2 - Domain Search</field>
+        <field name="country_id" ref="base.us"/>
+    </record>
+
+    <record id="autocomplete_test_3" model="kw.autocomplete.test">
+        <field name="name">Test Record 3 - Callback</field>
+    </record>
+
+</odoo>

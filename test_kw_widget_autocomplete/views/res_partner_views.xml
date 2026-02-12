@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <!-- Extend res.partner form to add test autocomplete fields -->
+    <record id="view_partner_form_kw_autocomplete" model="ir.ui.view">
+        <field name="name">res.partner.form.kw.autocomplete</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page string="KW Autocomplete Test" name="kw_autocomplete_test">
+                    <group>
+                        <group string="Model Method Source">
+                            <field name="kw_test_city"
+                                   widget="kw_autocomplete"
+                                   placeholder="Type city name..."
+                                   options="{
+                                       'source_type': 'model_method',
+                                       'source_config': {
+                                           'model': 'res.partner',
+                                           'method': 'autocomplete_cities_for_partner'
+                                       },
+                                       'depends_on': ['country_id'],
+                                       'min_chars': 2
+                                   }"/>
+                        </group>
+                        <group string="Domain Search Source">
+                            <field name="kw_test_tag"
+                                   widget="kw_autocomplete"
+                                   placeholder="Search partner tag..."
+                                   options="{
+                                       'source_type': 'domain_search',
+                                       'source_config': {
+                                           'model': 'res.partner.category',
+                                           'domain': [],
+                                           'search_field': 'name',
+                                           'display_fields': ['name', 'color'],
+                                           'value_field': 'name',
+                                           'limit': 10
+                                       },
+                                       'min_chars': 1
+                                   }"/>
+                        </group>
+                    </group>
+                    <div class="alert alert-warning" role="alert">
+                        <strong>Test Fields:</strong>
+                        These fields are for testing the kw_autocomplete widget.
+                        <ul>
+                            <li>
+                                <strong>KW Test City</strong> - uses model method
+                                autocomplete_cities_for_partner(), depends on
+                                country_id
+                            </li>
+                            <li>
+                                <strong>KW Test Tag</strong> - uses domain search
+                                on res.partner.category
+                            </li>
+                        </ul>
+                    </div>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <!-- Menu under Settings > Technical -->
+    <menuitem id="menu_kw_autocomplete_test_root"
+              name="KW Autocomplete Test"
+              parent="base.menu_custom"
+              sequence="100"/>
+
+    <menuitem id="menu_kw_autocomplete_test"
+              name="Autocomplete Tests"
+              parent="menu_kw_autocomplete_test_root"
+              action="action_kw_autocomplete_test"
+              sequence="10"/>
+
+</odoo>

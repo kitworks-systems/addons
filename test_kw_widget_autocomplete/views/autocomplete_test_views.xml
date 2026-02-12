@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <!-- Form View -->
+    <record id="view_kw_autocomplete_test_form" model="ir.ui.view">
+        <field name="name">kw.autocomplete.test.form</field>
+        <field name="model">kw.autocomplete.test</field>
+        <field name="arch" type="xml">
+            <form string="Autocomplete Test">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                    </group>
+
+                    <notebook>
+                        <!-- Model Method Source -->
+                        <page string="Model Method" name="model_method">
+                            <group>
+                                <group string="Dependencies">
+                                    <field name="country_id"/>
+                                </group>
+                                <group string="Autocomplete Fields">
+                                    <field name="city_model_method"
+                                           widget="kw_autocomplete"
+                                           placeholder="Type city name..."
+                                           options="{
+                                               'source_type': 'model_method',
+                                               'source_config': {
+                                                   'model': 'kw.autocomplete.test',
+                                                   'method': 'autocomplete_cities'
+                                               },
+                                               'depends_on': ['country_id'],
+                                               'min_chars': 2
+                                           }"/>
+                                </group>
+                            </group>
+                            <div class="alert alert-info" role="alert">
+                                <strong>Model Method Source:</strong>
+                                Calls autocomplete_cities() method on
+                                kw.autocomplete.test model.
+                                Try selecting a country first, then type
+                                a city name.
+                            </div>
+                        </page>
+
+                        <!-- Domain Search Source -->
+                        <page string="Domain Search" name="domain_search">
+                            <group>
+                                <group string="Partner Search">
+                                    <field name="partner_domain"
+                                           widget="kw_autocomplete"
+                                           placeholder="Search partner..."
+                                           options="{
+                                               'source_type': 'domain_search',
+                                               'source_config': {
+                                                   'model': 'res.partner',
+                                                   'domain': [],
+                                                   'search_field': 'name',
+                                                   'display_fields': [
+                                                       'name', 'email', 'phone'
+                                                   ],
+                                                   'label_template': '{name} ({email})',
+                                                   'value_field': 'name',
+                                                   'limit': 10
+                                               },
+                                               'min_chars': 2,
+                                               'field_mapping': {
+                                                   'selected_partner_email': 'email',
+                                                   'selected_partner_phone': 'phone'
+                                               }
+                                           }"/>
+                                    <field name="selected_partner_email"
+                                           readonly="1"/>
+                                    <field name="selected_partner_phone"
+                                           readonly="1"/>
+                                </group>
+                                <group string="Country Search">
+                                    <field name="country_domain"
+                                           widget="kw_autocomplete"
+                                           placeholder="Search country..."
+                                           options="{
+                                               'source_type': 'domain_search',
+                                               'source_config': {
+                                                   'model': 'res.country',
+                                                   'domain': [],
+                                                   'search_field': 'name',
+                                                   'display_fields': ['name', 'code'],
+                                                   'label_template': '{name} ({code})',
+                                                   'value_field': 'name',
+                                                   'limit': 10
+                                               },
+                                               'min_chars': 1
+                                           }"/>
+                                </group>
+                            </group>
+                            <div class="alert alert-info" role="alert">
+                                <strong>Domain Search Source:</strong>
+                                Searches records directly using domain.
+                                Partner search uses field_mapping to auto-fill
+                                email and phone fields.
+                            </div>
+                        </page>
+
+                        <!-- Model Method with Callback -->
+                        <page string="With Callback" name="callback">
+                            <group>
+                                <field name="partner_id" invisible="1"/>
+                                <field name="partner_domain"
+                                       widget="kw_autocomplete"
+                                       placeholder="Search partner (callback)..."
+                                       options="{
+                                           'source_type': 'model_method',
+                                           'source_config': {
+                                               'model': 'kw.autocomplete.test',
+                                               'method': 'autocomplete_partners'
+                                           },
+                                           'min_chars': 2,
+                                           'on_select_method': 'apply_partner_selection'
+                                       }"/>
+                                <field name="selected_partner_email" readonly="1"/>
+                                <field name="selected_partner_phone" readonly="1"/>
+                            </group>
+                            <div class="alert alert-info" role="alert">
+                                <strong>On Select Callback:</strong>
+                                Uses on_select_method to call
+                                apply_partner_selection() which returns
+                                field values to update.
+                            </div>
+                        </page>
+
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Tree View -->
+    <record id="view_kw_autocomplete_test_tree" model="ir.ui.view">
+        <field name="name">kw.autocomplete.test.tree</field>
+        <field name="model">kw.autocomplete.test</field>
+        <field name="arch" type="xml">
+            <list string="Autocomplete Tests">
+                <field name="name"/>
+                <field name="country_id"/>
+                <field name="city_model_method"/>
+                <field name="partner_domain"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_kw_autocomplete_test" model="ir.actions.act_window">
+        <field name="name">Autocomplete Tests</field>
+        <field name="res_model">kw.autocomplete.test</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+</odoo>
