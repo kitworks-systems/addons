@@ -9,6 +9,7 @@
     'depends': [
         'base',
         'contacts',
+        'product',
         'kw_widget_autocomplete',
     ],
     'data': [
@@ -21,6 +22,11 @@
     'demo': [
         'demo/demo_data.xml',
     ],
+    'assets': {
+        'web.assets_tests': [
+            'test_kw_widget_autocomplete/static/tests/**/*',
+        ],
+    },
     'installable': True,
     'auto_install': False,
     'application': False,

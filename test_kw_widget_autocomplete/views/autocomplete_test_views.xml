@@ -128,6 +128,33 @@
                             </div>
                         </page>
 
+                        <!-- JSON Endpoint Source -->
+                        <page string="JSON Endpoint" name="json_endpoint">
+                            <group>
+                                <group string="Product Search (JSON)">
+                                    <field name="product_json"
+                                           widget="kw_autocomplete"
+                                           placeholder="Search products..."
+                                           options="{
+                                               'source_type': 'json_endpoint',
+                                               'source_config': {
+                                                   'endpoint': '/test_autocomplete/products',
+                                                   'query_param': 'query',
+                                                   'label_field': 'label',
+                                                   'value_field': 'value'
+                                               },
+                                               'min_chars': 2
+                                           }"/>
+                                </group>
+                            </group>
+                            <div class="alert alert-info" role="alert">
+                                <strong>JSON Endpoint Source:</strong>
+                                Uses HTTP fetch to call Odoo controller endpoint
+                                /test_autocomplete/products which returns
+                                product data.
+                            </div>
+                        </page>
+
                     </notebook>
                 </sheet>
             </form>
