@@ -8,6 +8,8 @@ export class ModelMethodSource {
         this.model = config.model || config.record?.resModel;
         this.method = config.method;
         this.extraArgs = config.args || [];
+        this.notification = config.notification;
+        this.silent = config.silent || false;
     }
 
     async fetchOptions(query) {
@@ -33,6 +35,12 @@ export class ModelMethodSource {
             return this._formatResults(results);
         } catch (error) {
             console.error('ModelMethodSource error:', error);
+            if (this.notification && !this.silent) {
+                this.notification.add(
+                    `Autocomplete error: ${error.message || 'Unknown error'}`,
+                    { type: "warning" }
+                );
+            }
             return [];
         }
     }

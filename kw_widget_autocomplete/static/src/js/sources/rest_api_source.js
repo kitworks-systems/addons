@@ -8,6 +8,8 @@ export class RestApiSource {
         this.config = config;
         this.proxyModel = config.proxy_model || 'kw.autocomplete.mixin';
         this.proxyMethod = config.proxy_method || 'kw_autocomplete_proxy_rest';
+        this.notification = config.notification;
+        this.silent = config.silent || false;
     }
 
     async fetchOptions(query) {
@@ -28,6 +30,12 @@ export class RestApiSource {
             return this._formatResults(results);
         } catch (error) {
             console.error('RestApiSource error:', error);
+            if (this.notification && !this.silent) {
+                this.notification.add(
+                    `API error: ${error.message || 'Unknown error'}`,
+                    { type: "warning" }
+                );
+            }
             return [];
         }
     }

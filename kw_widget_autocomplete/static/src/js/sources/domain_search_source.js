@@ -12,6 +12,8 @@ export class DomainSearchSource {
         this.limit = config.limit || 10;
         this.labelTemplate = config.label_template;
         this.valueField = config.value_field || this.searchField;
+        this.notification = config.notification;
+        this.silent = config.silent || false;
     }
 
     async fetchOptions(query) {
@@ -47,6 +49,12 @@ export class DomainSearchSource {
             return this._formatResults(records);
         } catch (error) {
             console.error('DomainSearchSource error:', error);
+            if (this.notification && !this.silent) {
+                this.notification.add(
+                    `Search error: ${error.message || 'Unknown error'}`,
+                    { type: "warning" }
+                );
+            }
             return [];
         }
     }

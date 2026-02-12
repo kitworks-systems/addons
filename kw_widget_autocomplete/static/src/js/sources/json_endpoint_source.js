@@ -9,6 +9,9 @@ export class JsonEndpointSource {
         this.extraParams = config.extra_params || {};
         this.labelField = config.label_field || 'label';
         this.valueField = config.value_field || 'value';
+        this.notification = config.notification;
+        this.silent = config.silent || false;
+        this.timeout = config.timeout || 10000;
     }
 
     async fetchOptions(query) {
@@ -35,12 +38,18 @@ export class JsonEndpointSource {
                 url.searchParams.append(key, params[key]);
             });
 
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), this.timeout);
+
             const response = await fetch(url.toString(), {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
                 },
+                signal: controller.signal,
             });
+
+            clearTimeout(timeoutId);
 
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
@@ -50,6 +59,21 @@ export class JsonEndpointSource {
             return this._formatResults(results);
         } catch (error) {
             console.error('JsonEndpointSource error:', error);
+
+            let errorMessage = 'Failed to fetch data';
+
+            if (error.name === 'AbortError') {
+                errorMessage = 'Request timeout - server did not respond';
+            } else if (error.name === 'TypeError' && error.message.includes('Failed to fetch')) {
+                errorMessage = 'Network error - check CORS settings or network connection';
+            } else if (error.message.includes('HTTP error')) {
+                errorMessage = error.message;
+            }
+
+            if (this.notification && !this.silent) {
+                this.notification.add(errorMessage, { type: "warning" });
+            }
+
             return [];
         }
     }

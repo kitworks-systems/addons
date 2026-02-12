@@ -26,13 +26,16 @@ export class KwAutocompleteField extends Component {
         dependsOn: { type: Array, optional: true },
         onSelectMethod: { type: String, optional: true },
         fieldMapping: { type: Object, optional: true },
+        silentErrors: { type: Boolean, optional: true },
     };
 
     setup() {
         this.orm = useService("orm");
+        this.notification = useService("notification");
 
         this._minChars = this.props.minChars ?? 2;
         this._cacheMaxSize = this.props.cacheSize ?? 50;
+        this._silentErrors = this.props.silentErrors ?? false;
 
         this._cache = new Map();
 
@@ -54,6 +57,8 @@ export class KwAutocompleteField extends Component {
             orm: this.orm,
             record: this.props.record,
             dependsOn: this.props.dependsOn || [],
+            notification: this.notification,
+            silent: this._silentErrors,
         };
 
         switch (sourceType) {
@@ -126,6 +131,12 @@ export class KwAutocompleteField extends Component {
             return results;
         } catch (error) {
             console.error('KwAutocomplete loadOptions error:', error);
+            if (!this._silentErrors) {
+                this.notification.add(
+                    _t("Failed to load autocomplete options"),
+                    { type: "warning" }
+                );
+            }
             return [];
         }
     }
@@ -155,6 +166,12 @@ export class KwAutocompleteField extends Component {
                 }
             } catch (error) {
                 console.error('onSelect method error:', error);
+                if (!this._silentErrors) {
+                    this.notification.add(
+                        _t("Error processing selection"),
+                        { type: "danger" }
+                    );
+                }
             }
         }
     }
@@ -173,6 +190,7 @@ export const kwAutocompleteField = {
         dependsOn: options.depends_on,
         onSelectMethod: options.on_select_method,
         fieldMapping: options.field_mapping,
+        silentErrors: options.silent_errors || false,
     }),
 };
 
