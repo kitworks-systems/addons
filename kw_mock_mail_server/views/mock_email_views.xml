@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_kw_mock_email_form" model="ir.ui.view">
+        <field name="name">kw.mock.email.form</field>
+        <field name="model">kw.mock.email</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_queue_test_email" type="object" string="Queue for Processing"
+                            class="oe_highlight" invisible="state != 'draft'"/>
+                    <button name="action_process_now" type="object" string="Process Now"
+                            class="oe_highlight" invisible="state != 'draft'"/>
+                    <button name="action_reset_test" type="object" string="Reset Test"
+                            invisible="state == 'draft'"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="email_from"/>
+                            <field name="email_to"/>
+                            <field name="server_id"/>
+                        </group>
+                        <group>
+                            <field name="res_model" readonly="1"/>
+                            <field name="res_id" readonly="1"/>
+                            <field name="res_name" readonly="1"/>
+                            <field name="user_id" readonly="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Email Body">
+                            <field name="body" nolabel="1"/>
+                        </page>
+                        <page string="Processing Log">
+                            <field name="processing_log" nolabel="1"/>
+                        </page>
+                        <page string="Error Message" invisible="not error_message">
+                            <field name="error_message" nolabel="1"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_kw_mock_email_tree" model="ir.ui.view">
+        <field name="name">kw.mock.email.tree</field>
+        <field name="model">kw.mock.email</field>
+        <field name="arch" type="xml">
+            <list decoration-success="state == 'processed'"
+                  decoration-danger="state == 'error'"
+                  decoration-info="state in ['queued', 'processing']">
+                <field name="name"/>
+                <field name="email_from"/>
+                <field name="email_to"/>
+                <field name="server_id"/>
+                <field name="state"/>
+                <field name="res_model"/>
+                <field name="res_id"/>
+                <field name="user_id"/>
+                <field name="create_date"/>
+                <button name="action_queue_test_email" type="object" string="Queue"
+                        icon="fa-clock-o" invisible="state != 'draft'"/>
+                <button name="action_process_now" type="object" string="Process Now"
+                        icon="fa-play" invisible="state != 'queued'"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_kw_mock_email_search" model="ir.ui.view">
+        <field name="name">kw.mock.email.search</field>
+        <field name="model">kw.mock.email</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="email_from"/>
+                <field name="email_to"/>
+                <field name="user_id"/>
+                <filter name="draft" string="Draft" domain="[('state', '=', 'draft')]"/>
+                <filter name="queued" string="Queued" domain="[('state', '=', 'queued')]"/>
+                <filter name="processing" string="Processing" domain="[('state', '=', 'processing')]"/>
+                <filter name="processed" string="Processed" domain="[('state', '=', 'processed')]"/>
+                <filter name="error" string="Error" domain="[('state', '=', 'error')]"/>
+                <group string="Group By">
+                    <filter name="group_by_state" string="State" domain="[]" context="{'group_by': 'state'}"/>
+                    <filter name="group_by_server" string="Server" domain="[]" context="{'group_by': 'server_id'}"/>
+                    <filter name="group_by_user" string="Assigned User" domain="[]" context="{'group_by': 'user_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_kw_mock_email" model="ir.actions.act_window">
+        <field name="name">Mock Emails</field>
+        <field name="res_model">kw.mock.email</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first mock email!
+            </p>
+            <p>
+                This tool allows you to emulate incoming emails and test how Odoo processes them.
+                You can test lead creation, user assignment, and email routing.
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="menu_kw_mock_email" name="Mock Emails"
+              parent="base.menu_email" action="action_kw_mock_email" sequence="2"/>
+
+</odoo>

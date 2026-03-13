@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="kw_widget_autocomplete.KwAutocompleteField">
+        <div class="kw_autocomplete_field" t-ref="root">
+            <t t-if="isReadonly">
+                <span class="o_readonly_modifier" t-esc="value"/>
+            </t>
+            <t t-else="">
+                <div class="o_input_dropdown">
+                    <AutoComplete
+                        value="props.record.data[props.name] or ''"
+                        sources="sources"
+                        onSelect.bind="onSelect"
+                        input="inputRef"
+                        placeholder="props.placeholder or ''"
+                    />
+                    <span class="o_dropdown_button"/>
+                </div>
+            </t>
+        </div>
+    </t>
+
+</templates>

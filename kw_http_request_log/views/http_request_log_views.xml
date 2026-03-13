@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="kw_http_request_log_tree_view" model="ir.ui.view">
+        <field name="name">kw.http.request.log.list</field>
+        <field name="model">kw.http.request.log</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="create_date"/>
+                <field name="method" optional="show"/>
+                <field name="code" optional="show"/>
+                <field name="error" optional="show"/>
+                <field name="log_source_id" optional="show"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="kw_http_request_log_form_view" model="ir.ui.view">
+        <field name="name">kw.http.request.log.form</field>
+        <field name="model">kw.http.request.log</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <group>
+                        <field name="name"/>
+                        <field name="log_source_id"/>
+                        <field name="create_date"/>
+                        <field name="delete_by_date"/>
+                        <field name="method"/>
+                        <field name="code"/>
+                        <field name="create_date"/>
+                        <field name="write_date" groups="base.group_no_one"/>
+                        <field name="process_time" invisible="not process_time" groups="base.group_no_one"/>
+                        <field name="log_process_time"/>
+                        <field name="type" invisible="1"/>
+                    </group>
+
+                    <group>
+                        <field name="headers" widget="ace" options="{'mode': 'python'}"/>
+                        <field name="error" widget="ace" options="{'mode': 'python'}"/>
+                    </group>
+                </group>
+
+                <group>
+                    <group>
+                        <field name="params" widget="ace" options="{'mode': 'python'}"/>
+                        <field name="request_body" widget="ace"
+                               invisible="request_body_file or type != 'json'"
+                               options="{'mode': 'python'}"/>
+                        <field name="request_body_xml" widget="ace"
+                               invisible="request_body_file or type != 'xml'"
+                               options="{'mode': 'xml'}"/>
+                        <field name="request_body_file"
+                               invisible="not request_body_file"/>
+                    </group>
+                    <group>
+                        <field name="response_body" widget="ace"
+                               options="{'mode': 'python'}"
+                               invisible="response_body_file or type != 'json'"/>
+                        <field name="response_body_xml" widget="ace"
+                               options="{'mode': 'xml'}"
+                               invisible="response_body_file or type != 'xml'"/>
+                        <field name="response_body_file"
+                               invisible="not response_body_file"/>
+                    </group>
+                </group>
+            </form>
+        </field>
+    </record>
+
+    <record id="kw_http_request_log_search" model="ir.ui.view">
+        <field name="name">kw.http.request.log.search</field>
+        <field name="model">kw.http.request.log</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="log_source_id"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="kw_http_request_log_act_window" model="ir.actions.act_window">
+        <field name="name">HTTP Requests Log</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">kw.http.request.log</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="kw_http_request_log_main_menu"
+              parent="base.menu_custom"
+              name="HTTP Request Log"/>
+
+    <menuitem id="kw_http_request_log_menu"
+              parent="kw_http_request_log_main_menu"
+              action="kw_http_request_log_act_window"
+              name="HTTP Request Logs"/>
+</odoo>

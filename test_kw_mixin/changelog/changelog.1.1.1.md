@@ -1,0 +1,1 @@
+- ir.model.access.csv - додано base.group_user до access rules

@@ -1,0 +1,190 @@
+<section style="max-width: 896px; margin: 0 auto;">
+    <div style="text-align: center;">
+        <h1 style="color:#875A7B;">Auth Signup Protection</h1>
+    </div>
+    <div style="text-align: center;">
+        <p>
+            <a href="http://www.gnu.org/licenses/lgpl-3.0-standalone.html">
+                <img alt="License: LGPL-3"
+                     src="https://img.shields.io/badge/license-LGPL--3-blue.png"/></a>
+            <a href="https://kitworks.systems/">
+                <img alt="Kitworks Systems"
+                     src="https://img.shields.io/badge/maintainer-Kitworks-purple.png"/></a>
+        </p>
+        <p><br></p>
+    </div>
+</section>
+
+<section style="margin: 0 auto; max-width: 896px;">
+    <div>
+        <p>Multi-layer signup form protection for Odoo. This module provides
+            four independent protection mechanisms for the
+            <code>/web/signup</code> page that can be enabled or disabled
+            individually through Settings.</p>
+
+        <p>Key features:</p>
+        <ul>
+            <li><b>Honeypot Field</b> &mdash; a hidden form field that catches
+                automated bots (enabled by default)
+            </li>
+            <li><b>Google reCAPTCHA v3</b> &mdash; invisible CAPTCHA
+                verification using Odoo's built-in <code>google_recaptcha</code>
+                module
+            </li>
+            <li><b>Disposable Email Blocking</b> &mdash; prevents registration
+                with throwaway email addresses (90+ pre-loaded domains)
+            </li>
+            <li><b>Email Verification</b> &mdash; requires email confirmation
+                before user account creation with rate limiting and token
+                expiration
+            </li>
+        </ul>
+    </div>
+</section>
+
+<section style="max-width: 896px; margin: 0 auto;">
+    <div>
+        <h3>Configuration</h3>
+        <p>All protection layers are configured in
+            <b>Settings &gt; Signup Protection</b>. Each layer has an
+            independent toggle and can be used in any combination.</p>
+
+        <h4>1. Honeypot</h4>
+        <p>Enabled by default. No additional configuration required.</p>
+        <p>A hidden field <code>website_url</code> is added to the signup form.
+            The field is invisible to human users (hidden via CSS with
+            <code>opacity: 0; position: absolute; height: 0</code>) but is
+            typically filled in by automated bots. When the field contains a
+            value, the signup is rejected with a generic error message.</p>
+
+        <h4>2. Google reCAPTCHA v3</h4>
+        <p>Disabled by default. Requires Google reCAPTCHA keys.</p>
+        <ol>
+            <li>Go to <b>Settings &gt; General Settings &gt; Integrations</b>
+                and configure your reCAPTCHA v3 site key and secret key.</li>
+            <li>Go to <b>Settings &gt; Signup Protection</b> and enable
+                <em>Enable reCAPTCHA on Signup</em>.</li>
+        </ol>
+        <p>The reCAPTCHA token is obtained automatically via JavaScript before
+            form submission and verified server-side using
+            <code>ir.http._verify_request_recaptcha_token()</code>.</p>
+
+        <h4>3. Disposable Email Blocking</h4>
+        <p>Disabled by default.</p>
+        <p>The module ships with 90+ known disposable email domains
+            (mailinator.com, guerrillamail.com, yopmail.com, tempmail.com,
+            etc.).</p>
+        <p>To manage the domain list, go to <b>Settings &gt; Technical &gt;
+            Disposable Email Domains</b>. You can add new domains, archive
+            or delete existing ones.</p>
+
+        <h4>4. Email Verification</h4>
+        <p>Disabled by default.</p>
+        <ol>
+            <li>Go to <b>Settings &gt; Signup Protection</b> and enable
+                <em>Enable Email Verification on Signup</em>.</li>
+            <li>Optionally adjust the <em>Verification Token Expiration</em>
+                (default: 24 hours).</li>
+        </ol>
+        <p>When enabled, the signup flow changes:</p>
+        <ol>
+            <li>User fills in the signup form and submits it.</li>
+            <li>Instead of creating a user account immediately, a pending
+                signup record is created and a verification email is sent.</li>
+            <li>The user clicks the verification link in the email.</li>
+            <li>The user account is created and the user is logged in
+                automatically.</li>
+        </ol>
+        <p>Rate limiting is enforced: max 3 attempts per email per hour,
+            max 5 attempts per IP per hour. A daily cron job cleans up
+            expired pending signups and removes old records after 7 days.</p>
+    </div>
+</section>
+
+<section style="max-width: 896px; margin: 0 auto;">
+    <div>
+        <h3>Compatibility</h3>
+        <p>This module is designed to work alongside other signup-related
+            modules without conflicts:</p>
+        <ul>
+            <li><b>kw_signup_form_base</b> &mdash; fully compatible (different
+                override points)</li>
+            <li><b>kw_signup_full_name</b> &mdash; fully compatible (extra
+                fields are preserved through JSON <code>signup_values</code>
+                during email verification)</li>
+        </ul>
+        <p>The module only overrides <code>web_auth_signup()</code> and does
+            not modify <code>do_signup()</code>,
+            <code>_signup_create_user()</code>, or
+            <code>signup_retrieve_info()</code>.</p>
+    </div>
+</section>
+
+<section style="max-width: 896px; margin: 0 auto;">
+    <div>
+        <h3>Technical Details</h3>
+        <h4>Models</h4>
+        <ul>
+            <li><b>kw.pending.signup</b> &mdash; stores pending signup requests
+                when email verification is enabled. Fields: login, name,
+                password (temporary), signup_values (JSON), token (20-char),
+                expiration, state (pending/verified/expired), ip_address.
+            </li>
+            <li><b>kw.disposable.email.domain</b> &mdash; stores known
+                disposable email domains. Fields: name (unique), active.
+            </li>
+        </ul>
+
+        <h4>Routes</h4>
+        <ul>
+            <li><code>/web/signup</code> &mdash; enhanced with protection
+                checks before standard signup flow</li>
+            <li><code>/web/signup/verify?token=...</code> &mdash; email
+                verification endpoint (creates user and authenticates)</li>
+        </ul>
+
+        <h4>Settings (ir.config_parameter)</h4>
+        <ul>
+            <li><code>kw_auth_signup_protection.honeypot_enabled</code>
+                (default: True)</li>
+            <li><code>kw_auth_signup_protection.recaptcha_enabled</code>
+                (default: False)</li>
+            <li><code>kw_auth_signup_protection.disposable_email_block</code>
+                (default: False)</li>
+            <li><code>kw_auth_signup_protection.email_verification</code>
+                (default: False)</li>
+            <li><code>kw_auth_signup_protection.token_expiration_hours</code>
+                (default: 24)</li>
+        </ul>
+    </div>
+</section>
+
+<section style="max-width: 896px; margin: 0 auto;">
+    <div>
+        <h3>Bug Tracker</h3>
+        <p>
+            Bugs are tracked on
+            <a href="https://github.com/kitworks-systems/addons/issues">
+                GitHub Issues</a>.
+        </p>
+    </div>
+</section>
+
+<section style="max-width: 896px; margin: 0 auto; text-align: center;">
+    <div>
+        <h2 style="color: #138c33">Maintainer</h2>
+        <p>KitWorks Systems. Our web site:
+            <a href="https://kitworks.systems">https://kitworks.systems</a></p>
+
+        <p>
+            We can provide you further Odoo Support, Odoo implementation,
+            Odoo customization, Odoo 3rd Party development and integration
+            software, consulting services. Our main goal is to provide the best
+            quality product for you.
+        </p>
+        <p>
+            For any questions
+            <a href="mailto:info@kitworks.systems">contact us</a>.
+        </p>
+    </div>
+</section>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="res_config_settings_view_form" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.kw_auth_signup_protection</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="base_setup.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="inside">
+                <app data-string="Signup Protection"
+                     string="Signup Protection"
+                     name="kw_auth_signup_protection"
+                     groups="base.group_system">
+                    <block title="Signup Protection">
+                        <setting string="Honeypot"
+                                 help="Add a hidden field to the signup form that bots will fill in automatically.">
+                            <field name="kw_signup_honeypot_enabled"/>
+                        </setting>
+
+                        <setting string="reCAPTCHA"
+                                 help="Require Google reCAPTCHA v3 verification on signup. Configure keys in General Settings > Integrations.">
+                            <field name="kw_signup_recaptcha_enabled"/>
+                        </setting>
+
+                        <setting string="Disposable Email Blocking"
+                                 help="Block registration from known disposable email domains (mailinator, guerrillamail, etc.).">
+                            <field name="kw_signup_disposable_email_block"/>
+                        </setting>
+
+                        <setting string="Email Verification"
+                                 help="Require email verification before creating user account. User is only created after clicking the verification link.">
+                            <field name="kw_signup_email_verification"/>
+                            <div invisible="not kw_signup_email_verification">
+                                <label for="kw_signup_token_expiration_hours"/>
+                                <field name="kw_signup_token_expiration_hours"
+                                       class="oe_inline"/>
+                            </div>
+                        </setting>
+                    </block>
+                </app>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

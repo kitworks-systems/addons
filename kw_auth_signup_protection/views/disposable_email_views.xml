@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="kw_disposable_email_domain_tree" model="ir.ui.view">
+        <field name="name">kw.disposable.email.domain.tree</field>
+        <field name="model">kw.disposable.email.domain</field>
+        <field name="arch" type="xml">
+            <list editable="bottom">
+                <field name="name"/>
+                <field name="active"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="kw_disposable_email_domain_search" model="ir.ui.view">
+        <field name="name">kw.disposable.email.domain.search</field>
+        <field name="model">kw.disposable.email.domain</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <filter name="active" string="Active"
+                        domain="[('active', '=', True)]"/>
+                <filter name="inactive" string="Archived"
+                        domain="[('active', '=', False)]"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="kw_disposable_email_domain_action" model="ir.actions.act_window">
+        <field name="name">Disposable Email Domains</field>
+        <field name="res_model">kw.disposable.email.domain</field>
+        <field name="view_mode">list</field>
+        <field name="search_view_id" ref="kw_disposable_email_domain_search"/>
+    </record>
+
+    <menuitem id="kw_disposable_email_domain_menu"
+              parent="base.menu_custom"
+              action="kw_disposable_email_domain_action"
+              sequence="91"/>
+
+</odoo>

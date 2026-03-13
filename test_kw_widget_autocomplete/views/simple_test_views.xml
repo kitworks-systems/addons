@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <!-- Simple Test Form with ONE autocomplete -->
+    <record id="view_kw_autocomplete_simple_test_form" model="ir.ui.view">
+        <field name="name">kw.autocomplete.test.simple.form</field>
+        <field name="model">kw.autocomplete.test</field>
+        <field name="priority">100</field>
+        <field name="arch" type="xml">
+            <form string="Simple Autocomplete Test">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="country_domain"
+                               widget="kw_autocomplete"
+                               placeholder="Search country..."
+                               options="{
+                                   'source_type': 'domain_search',
+                                   'source_config': {
+                                       'model': 'res.country',
+                                       'domain': [],
+                                       'search_field': 'name',
+                                       'display_fields': ['name', 'code'],
+                                       'label_template': '{name} ({code})',
+                                       'value_field': 'name',
+                                       'limit': 10
+                                   },
+                                   'min_chars': 1
+                               }"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Action for simple test -->
+    <record id="action_kw_autocomplete_simple_test" model="ir.actions.act_window">
+        <field name="name">Simple Autocomplete Test</field>
+        <field name="res_model">kw.autocomplete.test</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_kw_autocomplete_simple_test_form"/>
+    </record>
+
+    <!-- Menu for simple test -->
+    <menuitem id="menu_kw_autocomplete_simple_test"
+              name="Simple Test"
+              parent="menu_kw_autocomplete_test_root"
+              action="action_kw_autocomplete_simple_test"
+              sequence="5"/>
+
+</odoo>

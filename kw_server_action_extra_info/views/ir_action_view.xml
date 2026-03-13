@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_server_action_form" model="ir.ui.view">
+        <field name="name">Server Action Form Inherit</field>
+        <field name="model">ir.actions.server</field>
+        <field name="inherit_id" ref="base.view_server_action_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='action_content']" position="after">
+                <sheet invisible="not (state in ['object_create', 'object_write'])">
+                    <notebook>
+                        <page string="Data to Write" name="page_object">
+                            <field name="fields_lines">
+                                <list editable="bottom">
+                                    <field name="col1"
+                                           options="{'no_create': True}"
+                                           domain="['|', ('model_id', '=', parent.crud_model_id), ('model_id', '=', parent.model_id)]"/>
+                                    <field name="handle_type"/>
+                                    <field name="resource_ref"
+                                           options="{'hide_model': True, 'no_create': True}"
+                                           readonly="handle_type != 'reference'"/>
+                                    <field name="kw_value"
+                                           readonly="handle_type == 'reference'"
+                                           options="{'no_create': True}"
+                                           force_save="1"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page name="security" string="Security">
+                            <field name="groups_id"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </xpath>
+
+        </field>
+    </record>
+</odoo>
