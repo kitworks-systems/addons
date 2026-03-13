@@ -1,0 +1,1 @@
+- Added possibility to send form-data in the requests

@@ -1,0 +1,3 @@
+- Fixed flake8 style issues in README.rst
+- Fixed pylint warnings
+- Updated version for compatibility with origin/14.0
