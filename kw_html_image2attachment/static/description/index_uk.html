@@ -1,0 +1,248 @@
+<section style="max-width: 896px; margin: 0 auto;">
+    <div style="text-align: center;">
+        <h1 style="color:#875A7B;">Конвертація HTML зображень у вкладення</h1>
+    </div>
+    <div style="text-align: center;">
+        <p>
+            <a href="http://www.gnu.org/licenses/lgpl-3.0-standalone.html">
+                <img alt="License: LGPL-3"
+                     src="https://img.shields.io/badge/license-LGPL--3-blue.png"/></a>
+            <a href="https://kitworks.systems/">
+                <img alt="Kitworks Systems"
+                     src="https://img.shields.io/badge/maintainer-Kitworks-purple.png"/></a>
+        </p>
+        <p><br></p>
+    </div>
+</section>
+
+<section style="max-width: 896px; margin: 0 auto;">
+    <div>
+        <p>Цей модуль надає функціонал для конвертації зображень з HTML полів у вкладення Odoo.
+           Він може обробляти як base64-кодовані зображення, так і зовнішні URL-адреси зображень,
+           роблячи їх доступними як вкладення Odoo та оновлюючи HTML-вміст відповідно.</p>
+
+        <p>Основні можливості включають:</p>
+        <ul>
+            <li>Автоматична конвертація зовнішніх зображень та base64-кодованих зображень у вкладення</li>
+            <li>Налаштовувана система завдань для обробки конкретних моделей та полів</li>
+            <li>Маркування вкладень для відстеження та керування</li>
+            <li>Очищення невикористаних зображень-вкладень</li>
+            <li>Підтримка як пакетної обробки, так і обробки окремих записів</li>
+        </ul>
+    </div>
+</section>
+
+<section style="max-width: 896px; margin: 0 auto;">
+    <div>
+        <h2 style="color:#875A7B;">Налаштування</h2>
+        <p>Налаштування модуля просте:</p>
+        <ol>
+            <li>Перейдіть до Налаштування -> Технічне -> HTML зображення у вкладення</li>
+            <li>Створіть нове завдання, вказавши:
+                <ul>
+                    <li>Назва: Ідентифікатор завдання</li>
+                    <li>Модель: Цільова модель, що містить HTML поля</li>
+                    <li>HTML поле: Цільове поле, що містить зображення для обробки</li>
+                </ul>
+            </li>
+            <li>Натисніть "Створити рядки" для генерації рядків обробки</li>
+            <li>Використовуйте кнопку "Виконати" для обробки окремих рядків або "Виконати все" для пакетної обробки</li>
+        </ol>
+    </div>
+</section>
+
+<section style="max-width: 896px; margin: 0 auto;">
+    <div>
+        <h2 style="color:#875A7B;">Технічні деталі</h2>
+        <p>Модуль складається з кількох ключових компонентів:</p>
+        
+        <h3>1. Обробка HTML зображень</h3>
+        <p>Модуль обробляє два типи зображень у HTML-вмісті:</p>
+        <ul>
+            <li><strong>Base64-кодовані зображення:</strong> Зображення, вбудовані безпосередньо в HTML за допомогою data URL
+                <pre><code>&lt;img src="data:image/jpeg;base64,/9j/4AAQSkZJRg..."&gt;</code></pre>
+            </li>
+            <li><strong>Зовнішні зображення:</strong> Зображення, на які посилаються через URL
+                <pre><code>&lt;img src="https://example.com/image.jpg"&gt;</code></pre>
+            </li>
+        </ul>
+
+        <h3>2. Реалізація міксину</h3>
+        <p>Модуль надає клас-міксин, який може бути успадкований будь-якою моделлю, що потребує обробки зображень:</p>
+        <pre><code>class MyModel(models.Model):
+    _name = 'my.model'
+    _inherit = ['kw.html.image2attachment.mixin']
+    
+    description = fields.Html()</code></pre>
+
+        <h3>3. Автоматична обробка</h3>
+        <p>Зображення автоматично обробляються під час:</p>
+        <ul>
+            <li>Створення запису (метод create)</li>
+            <li>Оновлення запису (метод write)</li>
+            <li>Пакетної обробки через систему завдань</li>
+        </ul>
+
+        <h3>4. Керування зображеннями</h3>
+        <p>Модуль надає інструменти для:</p>
+        <ul>
+            <li>Конвертації зображень у вкладення Odoo</li>
+            <li>Оновлення HTML-вмісту з URL-адресами вкладень</li>
+            <li>Маркування вкладень для відстеження</li>
+            <li>Очищення невикористаних вкладень</li>
+        </ul>
+    </div>
+</section>
+
+<section style="max-width: 896px; margin: 0 auto;">
+    <div>
+        <h2 style="color:#875A7B;">Приклади використання</h2>
+        
+        <h3>1. Пряме використання моделі</h3>
+        <p>Для моделей, що успадковують міксин:</p>
+        <pre><code># Зображення будуть автоматично оброблені
+record = env['my.model'].create({
+    'description': '&lt;img src="data:image/jpeg;base64,..."&gt;'
+})
+
+# Оновлення вмісту з новими зображеннями
+record.write({
+    'description': '&lt;img src="https://example.com/image.jpg"&gt;'
+})</code></pre>
+
+        <h3>2. Використання системи завдань</h3>
+        <p>Для обробки існуючих записів:</p>
+        <ol>
+            <li>Створіть завдання для цільової моделі та поля</li>
+            <li>Згенеруйте рядки обробки</li>
+            <li>Виконайте обробку:
+                <pre><code># Обробка одного рядка
+task_line.action_execute()
+
+# Обробка всіх рядків
+task.action_execute_all()</code></pre>
+            </li>
+        </ol>
+
+        <h3>3. Ручна обробка</h3>
+        <p>Ви також можете обробляти зображення вручну:</p>
+        <pre><code># Отримання інструменту обробки
+tool = env['kw.html_image2attachment.tool']
+
+# Обробка конкретного запису
+tool.process_record(record, 'description')
+
+# Очищення невикористаних зображень
+tool.clean_unused_images(record)</code></pre>
+    </div>
+</section>
+
+<section style="max-width: 896px; margin: 0 auto;">
+    <div>
+        <h2 style="color:#875A7B;">Посібник з інтеграції</h2>
+        
+        <h3>1. Успадкування міксину</h3>
+        <p>Щоб додати обробку зображень до вашої моделі:</p>
+        <pre><code># models/my_model.py
+from odoo import models, fields
+
+class MyModel(models.Model):
+    _name = 'my.model'
+    _inherit = ['mail.thread', 'kw.html.image2attachment.mixin']
+    
+    name = fields.Char()
+    description = fields.Html()  # HTML поле, яке буде оброблятися
+    other_html_field = fields.Html()  # Інше HTML поле
+    
+    # Опціонально: Перевизначте html_fields для вказівки полів для обробки
+    @property
+    def html_fields(self):
+        return ['description', 'other_html_field']</code></pre>
+
+        <h3>2. Міграційний скрипт</h3>
+        <p>Для обробки існуючих записів під час оновлення модуля створіть міграційний скрипт:</p>
+        <pre><code># migrations/16.0.1.1.0/post-migrate.py
+from odoo import api, SUPERUSER_ID
+
+def migrate(cr, version):
+    if not version:
+        return
+        
+    env = api.Environment(cr, SUPERUSER_ID, {})
+    
+    # Отримання всіх моделей, що успадковують kw.html.image2attachment.mixin
+    IrModel = env['ir.model']
+    models = IrModel.search([
+        ('inherited_model_ids.model', '=', 'kw.html.image2attachment.mixin')
+    ])
+    
+    # Обробка кожної моделі
+    tool = env['kw.html_image2attachment.tool']
+    for model in models:
+        if not model.model in env:
+            continue
+            
+        Model = env[model.model]
+        records = Model.search([])
+        
+        # Маркування вкладень для кожного запису
+        for record in records:
+            tool.mark_attachments(record)
+            
+        # Комміт після кожної моделі, щоб уникнути довгих транзакцій
+        env.cr.commit()</code></pre>
+
+        <h3>3. Структура директорій</h3>
+        <p>Ваш модуль повинен мати таку структуру:</p>
+        <pre><code>my_module/
+├── __init__.py
+├── __manifest__.py
+├── models/
+│   ├── __init__.py
+│   └── my_model.py
+└── migrations/
+    └── 16.0.1.1.0/
+        └── post-migrate.py</code></pre>
+
+        <h3>4. Залежності в маніфесті</h3>
+        <p>Додайте залежність у маніфесті вашого модуля:</p>
+        <pre><code># __manifest__.py
+{
+    'name': 'My Module',
+    'version': '16.0.1.1.0',
+    'depends': [
+        'base',
+        'kw_html_image2attachment',
+    ],
+    # ...
+}</code></pre>
+    </div>
+</section>
+
+<section style="max-width: 896px; margin: 0 auto;">
+    <div>
+        <h3>Відстеження помилок</h3>
+        <p>
+            Помилки відстежуються на <a href="https://kitworks.systems/requests">https://kitworks.systems/requests</a>.
+            У разі виникнення проблем, будь ласка, перевірте, чи не було вже повідомлено про вашу проблему.
+        </p>
+    </div>
+</section>
+
+<section style="max-width: 896px; margin: 0 auto;">
+    <div>
+        <h2 style="color: #138c33">Розробник</h2>
+        <p>KitWorks Systems. Наш веб-сайт: <a href="https://kitworks.systems">https://kitworks.systems</a></p>
+
+        <p>
+            Ми можемо надати вам подальшу підтримку Odoo, впровадження Odoo,
+            налаштування Odoo, розробку та інтеграцію стороннього програмного забезпечення Odoo,
+            консультаційні послуги. Наша головна мета - надати вам продукт
+            найвищої якості.
+        </p>
+        <p>
+            З будь-яких питань
+            <a href="mailto:info@kitworks.systems">зв'яжіться з нами</a>.
+        </p>
+    </div>
+</section>

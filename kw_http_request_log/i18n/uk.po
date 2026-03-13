@@ -1,0 +1,184 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* kw_http_request
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 18.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-03-26 10:12+0000\n"
+"PO-Revision-Date: 2024-03-26 10:12+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: kw_http_request
+#: model:ir.model.fields,field_description:kw_http_request.field_kw_http_request_log_source__active
+msgid "Active"
+msgstr "Активний"
+
+#. module: kw_http_request
+#: model:ir.model.fields,field_description:kw_http_request.field_kw_http_request_log_source__base_url
+msgid "Base URL"
+msgstr "Базовий URL"
+
+#. module: kw_http_request
+#: model:ir.actions.server,name:kw_http_request.cleanup_outdated_log_cron_ir_actions_server
+#: model:ir.cron,cron_name:kw_http_request.cleanup_outdated_log_cron
+#: model:ir.cron,name:kw_http_request.cleanup_outdated_log_cron
+msgid "Cleaning up outdated logs"
+msgstr "Очищення застарілих логів"
+
+#. module: kw_http_request
+#: model:ir.model.fields,field_description:kw_http_request.field_kw_http_request_log__code
+msgid "Code"
+msgstr "Код"
+
+#. module: kw_http_request
+#: model:ir.model.fields,field_description:kw_http_request.field_kw_http_request_log_source__company_id
+msgid "Company"
+msgstr "Компанія"
+
+#. module: kw_http_request
+#: model:ir.model.fields,field_description:kw_http_request.field_kw_http_request_log__create_uid
+#: model:ir.model.fields,field_description:kw_http_request.field_kw_http_request_log_source__create_uid
+msgid "Created by"
+msgstr "Створено"
+
+#. module: kw_http_request
+#: model:ir.model.fields,field_description:kw_http_request.field_kw_http_request_log__create_date
+#: model:ir.model.fields,field_description:kw_http_request.field_kw_http_request_log_source__create_date
+msgid "Created on"
+msgstr "Створено"
+
+#. module: kw_http_request
+#: model:ir.model.fields,field_description:kw_http_request.field_kw_http_request_log__display_name
+#: model:ir.model.fields,field_description:kw_http_request.field_kw_http_request_log_source__display_name
+msgid "Display Name"
+msgstr "Відображуване ім'я"
+
+#. module: kw_http_request
+#: model:ir.model.fields,field_description:kw_http_request.field_kw_http_request_log__error
+msgid "Error"
+msgstr "Помилка"
+
+#. module: kw_http_request
+#: model:ir.model,name:kw_http_request.model_kw_http_request_log_source
+#: model:ir.model.fields,field_description:kw_http_request.field_kw_http_request_log__log_source_id
+msgid "HTTP Request Source"
+msgstr "Джерело HTTP запиту"
+
+#. module: kw_http_request
+#: code:addons/kw_http_request/models/http_request_source.py:0
+#: code:addons/kw_http_request/models/http_request_source.py:0
+#, python-format
+msgid "HTTP Request Source \"%(name)s\" connection error: \"%(error)s\""
+msgstr "При виконанні запиту джерела \"%(name)s\" виникла помилка: \"%(error)s\""
+
+#. module: kw_http_request
+#: model:ir.actions.act_window,name:kw_http_request.kw_http_request_kw_http_request_log_act_window
+#: model:ir.model,name:kw_http_request.model_kw_http_request_log
+msgid "HTTP Requests Log"
+msgstr "Журнал запитів HTTP"
+
+#. module: kw_http_request
+#: model:ir.model.fields,field_description:kw_http_request.field_kw_http_request_log__headers
+msgid "Headers"
+msgstr "Заголовки"
+
+#. module: kw_http_request
+#: model:ir.model.fields,field_description:kw_http_request.field_kw_http_request_log__id
+#: model:ir.model.fields,field_description:kw_http_request.field_kw_http_request_log_source__id
+msgid "ID"
+msgstr "ID"
+
+#. module: kw_http_request
+#: model:ir.model.fields,help:kw_http_request.field_kw_http_request_log_source__is_log_enabled
+msgid "If enabled, all HTTP requests to API will be stored in the HTTP Request Log."
+msgstr "Якщо ввімкнено, усі запити HTTP до API зберігатимуться в журналі запитів HTTP."
+
+#. module: kw_http_request
+#: model:ir.model.fields,field_description:kw_http_request.field_kw_http_request_log_source__is_log_enabled
+msgid "Is Log Enabled"
+msgstr "Журнал запитів увімкнено"
+
+#. module: kw_http_request
+#: model:ir.model.fields,field_description:kw_http_request.field_kw_http_request_log__json
+msgid "Json"
+msgstr "JSON"
+
+#. module: kw_http_request
+#: model:ir.model.fields,field_description:kw_http_request.field_kw_http_request_log____last_update
+#: model:ir.model.fields,field_description:kw_http_request.field_kw_http_request_log_source____last_update
+msgid "Last Modified on"
+msgstr "Остання модифікація"
+
+#. module: kw_http_request
+#: model:ir.model.fields,field_description:kw_http_request.field_kw_http_request_log__write_uid
+#: model:ir.model.fields,field_description:kw_http_request.field_kw_http_request_log_source__write_uid
+msgid "Last Updated by"
+msgstr "Востаннє оновлено"
+
+#. module: kw_http_request
+#: model:ir.model.fields,field_description:kw_http_request.field_kw_http_request_log__write_date
+#: model:ir.model.fields,field_description:kw_http_request.field_kw_http_request_log_source__write_date
+msgid "Last Updated on"
+msgstr "Востаннє оновлено"
+
+#. module: kw_http_request
+#: model:ir.model.fields,field_description:kw_http_request.field_kw_http_request_log_source__log_retention_period
+msgid "Log Retention Period in days"
+msgstr "Термін зберігання логів в днях"
+
+#. module: kw_http_request
+#: model:ir.model.fields,field_description:kw_http_request.field_kw_http_request_log_source__api_login
+msgid "Login"
+msgstr "Логін"
+
+#. module: kw_http_request
+#: model:ir.model.fields,help:kw_http_request.field_kw_http_request_log_source__api_login
+msgid "Login from the API account."
+msgstr "Логін з облікового запису API"
+
+#. module: kw_http_request
+#: model:ir.model.fields,field_description:kw_http_request.field_kw_http_request_log__method
+msgid "Method"
+msgstr "Метод"
+
+#. module: kw_http_request
+#: model:ir.model.fields,field_description:kw_http_request.field_kw_http_request_log_source__name
+msgid "Name"
+msgstr "Назва"
+
+#. module: kw_http_request
+#: model:ir.model.fields,field_description:kw_http_request.field_kw_http_request_log__params
+msgid "Params"
+msgstr "Параметри"
+
+#. module: kw_http_request
+#: model:ir.model.fields,field_description:kw_http_request.field_kw_http_request_log_source__api_password
+msgid "Password"
+msgstr "Пароль"
+
+#. module: kw_http_request
+#: model:ir.model.fields,help:kw_http_request.field_kw_http_request_log_source__api_password
+msgid "Password from the API account."
+msgstr "Пароль з облікового запису API"
+
+#. module: kw_http_request
+#: model:ir.model.fields,field_description:kw_http_request.field_kw_http_request_log__response
+msgid "Response"
+msgstr "Відповідь"
+
+#. module: kw_http_request
+#: model:ir.model.fields,field_description:kw_http_request.field_kw_http_request_log_source__sequence
+msgid "Sequence"
+msgstr "Послідовність"
+
+#. module: kw_http_request
+#: model:ir.model.fields,field_description:kw_http_request.field_kw_http_request_log__name
+msgid "URL"
+msgstr "URL"

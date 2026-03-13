@@ -1,0 +1,158 @@
+<section style="max-width: 896px; margin: 0 auto;">
+    <div style="text-align: center;">
+        <h1 style="color:#875A7B;">HTTP Request Log</h1>
+    </div>
+    <div style="text-align: center;">
+        <p>
+            <a href="http://www.gnu.org/licenses/lgpl-3.0-standalone.html">
+                <img alt="License: LGPL-3"
+                     src="https://img.shields.io/badge/license-LGPL--3-blue.png"/></a>
+            <a href="https://kitworks.systems/">
+                <img alt="Kitworks Systems"
+                     src="https://img.shields.io/badge/maintainer-Kitworks-purple.png"/></a>
+        </p>
+        <p><br></p>
+    </div>
+</section>
+
+<section style="margin: 0 auto; max-width: 896px;">
+    <div>
+        <p>This module provides functionality to log and track HTTP requests in
+            Odoo. It allows storing and managing HTTP request logs with their
+            sources, making it easier to monitor and analyze HTTP traffic in
+            your Odoo instance.</p>
+
+        <p>Key features include:</p>
+        <ul>
+            <li>HTTP Request Logging: Log incoming HTTP requests with detailed
+                information
+            </li>
+            <li>Source Management: Track different sources of HTTP requests
+            </li>
+            <li>Automatic Cleanup: Configurable automatic deletion of old
+                logs
+            </li>
+            <li>Request Body Storage: Smart handling of request bodies with
+                file storage for large payloads
+            </li>
+        </ul>
+    </div>
+</section>
+
+<section style="max-width: 896px; margin: 0 auto;">
+    <div>
+        <h3>Developer Guide</h3>
+
+        <h4>Configuration</h4>
+        <h5>Create a Log Source:</h5>
+        <pre>
+source_id = env['kw.http.request.log.source'].create({
+    'name': 'My API Integration',
+    'code': 'my_api',
+    'active': True,
+    'keep_days': 30,  # Keep logs for 30 days
+})
+</pre>
+
+        <h4>Logging Requests</h4>
+        <h5>Basic Request Logging:</h5>
+        <pre>
+env['kw.http.request.log'].create_in_new_transaction({
+    'log_source_id': source_id.id,
+    'request_method': 'POST',
+    'request_url': 'https://api.example.com/endpoint',
+    'request_headers': {'Content-Type': 'application/json'},
+    'request_body': '{"key": "value"}',
+    'response_status': 200,
+    'response_body': '{"status": "success"}'
+})
+</pre>
+
+        <h5>Using with HTTP Controller:</h5>
+        <pre>
+from odoo import http
+from odoo.http import request
+
+class MyController(http.Controller):
+    @http.route('/my/api/endpoint', type='json', auth='public')
+    def handle_request(self, **kwargs):
+        source = request.env['kw.http.request.log.source'].sudo().search(
+            [('code', '=', 'my_api')], limit=1)
+        
+        request.env['kw.http.request.log'].sudo().create_in_new_transaction({
+            'log_source_id': source.id,
+            'request_method': request.httprequest.method,
+            'request_url': request.httprequest.url,
+            'request_headers': dict(request.httprequest.headers),
+            'request_body': request.httprequest.data.decode(),
+            'response_status': 200,
+            'response_body': json.dumps(response_data)
+        })
+        
+        return response_data
+</pre>
+    </div>
+</section>
+
+<section style="max-width: 896px; margin: 0 auto;">
+    <div>
+        <h3>Features Details</h3>
+        <ul>
+            <li><b>Large Request Bodies:</b>
+                <ul>
+                    <li>Bodies larger than 10KB are automatically stored in
+                        attachment files
+                    </li>
+                    <li>Access the full body content through the body_content
+                        computed field
+                    </li>
+                </ul>
+            </li>
+            <li><b>Automatic Cleanup:</b>
+                <ul>
+                    <li>Logs are automatically deleted based on source's
+                        keep_days setting
+                    </li>
+                    <li>Configure the cleanup schedule in ir.cron settings</li>
+                </ul>
+            </li>
+            <li><b>Error Handling:</b>
+                <ul>
+                    <li>Use error_message field for storing error
+                        descriptions
+                    </li>
+                    <li>Set is_error flag for failed requests</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</section>
+
+<section style="max-width: 896px; margin: 0 auto;">
+    <div>
+        <h3>Bug Tracker</h3>
+        <p>
+            Bugs are tracked on <a href="https://kitworks.systems/requests">https://kitworks.systems/requests</a>.
+            In case of trouble, please check there if your issue has already
+            been reported.
+        </p>
+    </div>
+</section>
+
+<section style="max-width: 896px; margin: 0 auto; text-align: center;">
+    <div>
+        <h2 style="color: #138c33">Maintainer</h2>
+        <p>KitWorks Systems. Our web site: <a href="https://kitworks.systems">https://kitworks.systems</a></p>
+
+        <p>
+            We can provide you further Odoo Support, Odoo implementation,
+            Odoo customization, Odoo 3rd Party development and integration
+            software, consulting services. Our main goal is to provide the best
+            quality product for you.
+        </p>
+        <p>
+            For any questions
+            <a href="mailto:info@kitworks.systems">contact us</a>.
+        </p>
+    </div>
+</section>

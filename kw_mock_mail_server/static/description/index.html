@@ -1,0 +1,132 @@
+<section style="max-width: 896px; margin: 0 auto;">
+    <div style="text-align: center;">
+        <h1 style="color:#875A7B;">Mock Mail Server</h1>
+    </div>
+    <div style="text-align: center;">
+        <p>
+            <a href="http://www.gnu.org/licenses/lgpl-3.0-standalone.html">
+                <img alt="License: LGPL-3"
+                     src="https://img.shields.io/badge/license-LGPL--3-blue.png"/></a>
+            <a href="https://kitworks.systems/">
+                <img alt="Kitworks Systems"
+                     src="https://img.shields.io/badge/maintainer-Kitworks-purple.png"/></a>
+        </p>
+        <p><br></p>
+    </div>
+</section>
+
+<section style="margin: 0 auto; max-width: 896px;">
+    <div>
+        <p>This module provides tools to test incoming email processing in Odoo without the need for actual email servers. It allows developers and testers to emulate receiving emails and create test scenarios for various email-based workflows.</p>
+
+        <p>Key features include:</p>
+        <ul>
+            <li>Test Email Creation: Create mock emails with custom subjects, senders, recipients, and body content</li>
+            <li>Email Processing Simulation: Emulate the process of receiving and processing emails through Odoo's mail gateway</li>
+            <li>Integration Testing: Test email-based workflows such as lead creation, user assignment, and email routing</li>
+            <li>Debugging Tools: Track the processing status and results of test emails</li>
+            <li>Error Handling: Capture and display errors that occur during email processing</li>
+        </ul>
+    </div>
+</section>
+
+<section style="max-width: 896px; margin: 0 auto;">
+    <div>
+        <h3>Usage Guide</h3>
+
+        <h4>Setting up a Test Mail Server</h4>
+        <ol>
+            <li>Go to Settings > Technical > Email > Incoming Mail Servers</li>
+            <li>Create a new server with type "Odoo Test Server"</li>
+            <li>Configure the target model that should process the incoming emails</li>
+            <li>Set the server to "Confirmed" state</li>
+        </ol>
+
+        <h4>Creating and Processing Test Emails</h4>
+        <ol>
+            <li>From the test server form view, click on the "Test Emails" button to access the test emails interface</li>
+            <li>Click "Create" to create a new test email</li>
+            <li>Fill in the required fields:
+                <ul>
+                    <li><b>Subject:</b> The email subject</li>
+                    <li><b>From:</b> The sender's email address</li>
+                    <li><b>To:</b> The recipient's email address</li>
+                    <li><b>Body:</b> The content of the email</li>
+                    <li><b>Server:</b> The test server to use (pre-filled if accessed from server)</li>
+                </ul>
+            </li>
+            <li>Click "Save" to save the test email</li>
+            <li>Use one of the action buttons:
+                <ul>
+                    <li><b>Queue for Processing:</b> Add the email to the processing queue</li>
+                    <li><b>Process Now:</b> Process the email immediately</li>
+                </ul>
+            </li>
+        </ol>
+
+        <h4>Viewing Test Results</h4>
+        <ol>
+            <li>After processing, the test email status will change to "Processed" or "Error"</li>
+            <li>The processing log will show details of what happened during processing</li>
+            <li>If a record was created, you'll see:
+                <ul>
+                    <li>The model and ID of the created record</li>
+                    <li>A link to view the created record</li>
+                    <li>The user assigned to the record (if applicable)</li>
+                </ul>
+            </li>
+            <li>If an error occurred, the error message will be displayed in the "Error Message" field</li>
+            <li>You can use the "Reset Test" button to clear results and try again</li>
+        </ol>
+    </div>
+</section>
+
+<section style="max-width: 896px; margin: 0 auto;">
+    <div>
+        <h3>Technical Details</h3>
+        <p>The module extends Odoo's fetchmail functionality by adding a new server type called "Odoo Test Server" which doesn't require actual connection to an email server. Instead, it processes mock emails created within the system.</p>
+        
+        <h4>Models</h4>
+        <ul>
+            <li><b>kw.mock.email</b>: Stores test email data and processing results</li>
+            <li><b>fetchmail.server</b>: Extended to support the "Odoo Test Server" type</li>
+        </ul>
+        
+        <h4>Use Cases</h4>
+        <ul>
+            <li><b>CRM Testing:</b> Test lead creation from emails</li>
+            <li><b>Helpdesk Testing:</b> Test ticket creation and assignment</li>
+            <li><b>Email Routing:</b> Test routing rules and processing logic</li>
+            <li><b>User Assignment:</b> Test automatic user assignment based on email recipients</li>
+        </ul>
+    </div>
+</section>
+
+<section style="max-width: 896px; margin: 0 auto;">
+    <div>
+        <h3>Bug Tracker</h3>
+        <p>
+            Bugs are tracked on <a href="https://kitworks.systems/requests">https://kitworks.systems/requests</a>.
+            In case of trouble, please check there if your issue has already
+            been reported.
+        </p>
+    </div>
+</section>
+
+<section style="max-width: 896px; margin: 0 auto; text-align: center;">
+    <div>
+        <h2 style="color: #138c33">Maintainer</h2>
+        <p>KitWorks Systems. Our web site: <a href="https://kitworks.systems">https://kitworks.systems</a></p>
+
+        <p>
+            We can provide you further Odoo Support, Odoo implementation,
+            Odoo customization, Odoo 3rd Party development and integration
+            software, consulting services. Our main goal is to provide the best
+            quality product for you.
+        </p>
+        <p>
+            For any questions
+            <a href="mailto:info@kitworks.systems">contact us</a>.
+        </p>
+    </div>
+</section>

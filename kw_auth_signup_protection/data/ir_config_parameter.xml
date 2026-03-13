@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+
+    <record id="config_recaptcha_enabled" model="ir.config_parameter">
+        <field name="key">kw_auth_signup_protection.recaptcha_enabled</field>
+        <field name="value">False</field>
+    </record>
+
+    <record id="config_email_verification" model="ir.config_parameter">
+        <field name="key">kw_auth_signup_protection.email_verification</field>
+        <field name="value">False</field>
+    </record>
+
+    <record id="config_honeypot_enabled" model="ir.config_parameter">
+        <field name="key">kw_auth_signup_protection.honeypot_enabled</field>
+        <field name="value">True</field>
+    </record>
+
+    <record id="config_disposable_email_block" model="ir.config_parameter">
+        <field name="key">kw_auth_signup_protection.disposable_email_block</field>
+        <field name="value">False</field>
+    </record>
+
+    <record id="config_token_expiration_hours" model="ir.config_parameter">
+        <field name="key">kw_auth_signup_protection.token_expiration_hours</field>
+        <field name="value">24</field>
+    </record>
+
+</odoo>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+
+    <record id="fetchmail_server_test1" model="fetchmail.server">
+        <field name="name">Test Email Server</field>
+        <field name="server_type">odoo_test_server</field>
+        <field name="state">done</field>
+        <field name="active">True</field>
+        <field name="server">odoo.test</field>
+        <field name="user">test</field>
+        <field name="password">test</field>
+    </record>
+
+    <record id="mock_email_basic_lead" model="kw.mock.email">
+        <field name="name">Request for Product Information</field>
+        <field name="email_from">customer@example.com</field>
+        <field name="email_to">mark.brown23@example.com</field>
+        <field name="body">Hello, I am interested in your products. Please send me more information.</field>
+        <field name="server_id" ref="fetchmail_server_test1"/>
+    </record>
+
+    <record id="mock_email_lead_with_alias" model="kw.mock.email">
+        <field name="name">Quote Request</field>
+        <field name="email_from">potential.customer@company.com</field>
+        <field name="email_to">mark.brown23@example.com</field>
+        <field name="body">I would like to request a quote for your services.</field>
+        <field name="server_id" ref="fetchmail_server_test1"/>
+    </record>
+
+    <record id="mock_email_lead_user_assignment" model="kw.mock.email">
+        <field name="name">Enterprise Solution Inquiry</field>
+        <field name="email_from">vip.customer@enterprise.com</field>
+        <field name="email_to">admin@yourcompany.example.com</field>
+        <field name="body">We are looking for an enterprise solution for our company.</field>
+        <field name="server_id" ref="fetchmail_server_test1"/>
+    </record>
+
+</odoo>

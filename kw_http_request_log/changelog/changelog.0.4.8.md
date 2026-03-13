@@ -1,0 +1,2 @@
+- Added changes in views.
+- Change http request log views.
