@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="signup_honeypot"
+              inherit_id="auth_signup.signup"
+              name="Signup Honeypot Field">
+        <xpath expr="//input[@name='token']" position="after">
+            <div class="kw_hp_field">
+                <label for="website_url">Website</label>
+                <input type="text" name="website_url" id="website_url"
+                       class="form-control form-control-sm"
+                       autocomplete="off" tabindex="-1"/>
+            </div>
+        </xpath>
+    </template>
+
+    <template id="signup_recaptcha"
+              inherit_id="auth_signup.signup"
+              name="Signup reCAPTCHA">
+        <xpath expr="//input[@name='csrf_token']" position="after">
+            <input type="hidden" name="recaptcha_token_response"
+                   id="recaptcha_token_response"/>
+        </xpath>
+    </template>
+
+    <template id="signup_verify_sent" name="Signup Verification Sent">
+        <t t-call="web.login_layout">
+            <div class="oe_login_form clearfix">
+                <p class="alert alert-success" role="status">
+                    <t t-esc="message"/>
+                </p>
+                <div class="text-center">
+                    <a href="/web/login"
+                       class="btn btn-link btn-sm" role="button">
+                        Back to Login
+                    </a>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="verify_result" name="Signup Verification Result">
+        <t t-call="web.login_layout">
+            <div class="oe_login_form clearfix">
+                <p t-if="error" class="alert alert-danger" role="alert">
+                    <t t-esc="error"/>
+                </p>
+                <p t-if="message" class="alert alert-success" role="status">
+                    <t t-esc="message"/>
+                </p>
+                <div class="text-center">
+                    <a t-if="error" href="/web/signup"
+                       class="btn btn-primary btn-sm" role="button">
+                        Sign up again
+                    </a>
+                    <a href="/web/login"
+                       class="btn btn-link btn-sm" role="button">
+                        Back to Login
+                    </a>
+                </div>
+            </div>
+        </t>
+    </template>
+
+</odoo>

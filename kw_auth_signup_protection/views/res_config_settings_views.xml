@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="res_config_settings_view_form" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.kw_auth_signup_protection</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="base_setup.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[hasclass('settings')]" position="inside">
+                <div class="app_settings_block"
+                     data-string="Signup Protection"
+                     string="Signup Protection"
+                     data-key="kw_auth_signup_protection"
+                     groups="base.group_system">
+                    <h2>Signup Protection</h2>
+                    <div class="row mt16 o_settings_container">
+
+                        <div class="col-12 col-lg-6 o_setting_box">
+                            <div class="o_setting_left_pane">
+                                <field name="kw_signup_honeypot_enabled"/>
+                            </div>
+                            <div class="o_setting_right_pane">
+                                <label for="kw_signup_honeypot_enabled"/>
+                                <div class="text-muted">
+                                    Add a hidden field to the signup form
+                                    that bots will fill in automatically.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-lg-6 o_setting_box">
+                            <div class="o_setting_left_pane">
+                                <field name="kw_signup_recaptcha_enabled"/>
+                            </div>
+                            <div class="o_setting_right_pane">
+                                <label for="kw_signup_recaptcha_enabled"/>
+                                <div class="text-muted">
+                                    Require Google reCAPTCHA v3 verification
+                                    on signup. Configure keys in
+                                    General Settings &gt; Integrations.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-lg-6 o_setting_box">
+                            <div class="o_setting_left_pane">
+                                <field name="kw_signup_disposable_email_block"/>
+                            </div>
+                            <div class="o_setting_right_pane">
+                                <label for="kw_signup_disposable_email_block"/>
+                                <div class="text-muted">
+                                    Block registration from known disposable
+                                    email domains (mailinator, guerrillamail,
+                                    etc.).
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-lg-6 o_setting_box">
+                            <div class="o_setting_left_pane">
+                                <field name="kw_signup_email_verification"/>
+                            </div>
+                            <div class="o_setting_right_pane">
+                                <label for="kw_signup_email_verification"/>
+                                <div class="text-muted">
+                                    Require email verification before creating
+                                    user account. User is only created after
+                                    clicking the verification link.
+                                </div>
+                                <div attrs="{'invisible': [('kw_signup_email_verification', '=', False)]}">
+                                    <label for="kw_signup_token_expiration_hours"/>
+                                    <field name="kw_signup_token_expiration_hours"
+                                           class="oe_inline"/>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

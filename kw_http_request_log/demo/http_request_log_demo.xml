@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="kw_http_request_log_1" model="kw.http.request.log">
+        <field name="log_source_id" ref="kw_http_request_log.kw_http_request_log_source_demo"/>
+        <field name="name">http://test.test</field>
+        <field name="method">POST</field>
+        <field name="request_body"><![CDATA[
+{
+  "partner_ref": 12345,
+  "partner_name": "Test Test",
+  "partner_email": "test@test.test",
+  "date_order": "2024-04-10 13:12:05+0300",
+  "carrier_id": 2
+}
+]]></field>
+        <field name="response_body"><![CDATA[
+{
+  "result": {
+    "state": "ok",
+    "order_id": 54321
+  }
+}
+]]></field>
+    </record>
+
+    <record id="kw_http_request_log_2_xml" model="kw.http.request.log">
+        <field name="log_source_id" ref="kw_http_request_log.kw_http_request_log_source_demo_xml"/>
+        <field name="name">http://test_xml.test</field>
+        <field name="method">POST</field>
+        <field name="request_body"><![CDATA[
+<request>
+    <item>
+        <partner_ref>12345</partner_ref>
+        <partner_name>Test Test</partner_name>
+        <partner_email>test@test.test</partner_email>
+        <date_order>2024-04-10 13:12:05+0300</date_order>
+        <carrier_id>2</carrier_id>
+    </item>
+</request>
+]]></field>
+        <field name="response_body"><![CDATA[
+<response>
+    <result>
+      <state>ok</state>
+      <order_id>54321</order_id>
+    <result>
+<response>
+]]></field>
+    </record>
+
+</odoo>

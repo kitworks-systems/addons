@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_fetchmail_server_form_inherit" model="ir.ui.view">
+        <field name="name">fetchmail.server.form.inherit</field>
+        <field name="model">fetchmail.server</field>
+        <field name="inherit_id" ref="mail.view_email_server_form"/>
+        <field name="arch" type="xml">
+            <header position="inside">
+                <button name="action_view_test_emails" type="object"
+                        string="View Test Emails" class="oe_highlight"
+                        attrs="{'invisible': [('server_type', '!=', 'odoo_test_server')]}"/>
+                <button name="action_queue_test_emails" type="object"
+                        string="Queue All Draft Tests" class="oe_stat_button"
+                        attrs="{'invisible': [('server_type', '!=', 'odoo_test_server')]}"/>
+            </header>
+        </field>
+    </record>
+</odoo>

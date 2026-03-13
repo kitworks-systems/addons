@@ -1,0 +1,185 @@
+<section style="max-width: 896px; margin: 0 auto;">
+    <div style="text-align: center;">
+        <h1 style="color:#875A7B;">API Connector</h1>
+    </div>
+    <div style="text-align: center;">
+        <p>
+            <a href="http://www.gnu.org/licenses/lgpl-3.0-standalone.html">
+                <img alt="License: LGPL-3"
+                     src="https://img.shields.io/badge/license-LGPL--3-blue.png"/></a>
+            <a href="https://kitworks.systems/">
+                <img alt="Kitworks Systems"
+                     src="https://img.shields.io/badge/maintainer-Kitworks-purple.png"/></a>
+        </p>
+        <p><br></p>
+    </div>
+</section>
+
+<section style="margin: 0 auto; max-width: 896px;">
+    <div>
+        <p>Technical module that provides functionality to create API
+            connectors in Odoo. This module helps to establish and manage
+            connections with external APIs, handle requests and responses, and
+            maintain logs of API interactions.</p>
+
+        <p>Key features include:</p>
+        <ul>
+            <li>API Connection Management: Create and manage multiple API
+                connections
+            </li>
+            <li>Request Handling: Handle API requests with proper error
+                handling and logging
+            </li>
+            <li>Response Processing: Process API responses with data
+                validation
+            </li>
+            <li>Integration with HTTP Request Log: Automatic logging of all API
+                interactions
+            </li>
+        </ul>
+    </div>
+</section>
+
+<section style="max-width: 896px; margin: 0 auto;">
+    <div>
+        <h3>Developer Guide</h3>
+
+        <h4>Configuration</h4>
+        <h5>1. Create Your API Connector Model:</h5>
+        <pre>
+from odoo import models, fields
+
+class MyAPIConnector(models.Model):
+    _name = 'my.api.connector'
+    _inherit = 'kw.api.connector'
+    _description = 'My API Connector'
+
+</pre>
+
+        <h5>2. Create Your API Credentials Model:</h5>
+        <pre>
+class MyAPICredential(models.Model):
+    _name = 'my.api.credential'
+    _inherit = ['kw.api.credential',
+               'generic.mixin.transaction.utils',
+               'kw.http.request.log.source.mixin']
+    _description = 'My API Credentials'
+
+    api_connector_id = fields.Many2one(
+        'my.api.connector',  # Reference to your connector model
+        )
+</pre>
+
+        <h5>3. Create API Connector Record:</h5>
+        <pre>
+# First, create the connector
+connector = env['my.api.connector'].create({
+    'name': 'My API Service',
+    'api_url': 'https://api.example.com',
+    'is_api_token_used': True,
+    'is_api_token_static': False
+})
+</pre>
+
+        <h5>4. Create API Credentials:</h5>
+        <pre>
+# Then create credentials linked to the connector
+credentials = env['my.api.credential'].create({
+    'name': 'My API Connection',
+    'api_connector_id': connector.id,
+    'active': True,
+    'company_id': env.company.id
+})
+</pre>
+
+        <h4>Making API Requests</h4>
+        <h5>Basic API Request:</h5>
+        <pre>
+# Use the api_request method from credentials
+response = credentials.api_request(
+    method='GET',
+    url='/users',
+    headers={'Content-Type': 'application/json'}
+)
+
+# Check if request was successful
+if credentials.is_api_success(response):
+    data = response.json()
+</pre>
+
+        <h5>Request with Parameters:</h5>
+        <pre>
+# Request with data and parameters
+response = credentials.api_request(
+    method='POST',
+    url='/search',
+    data={
+        'query': 'search_term',
+        'limit': 10
+    },
+    headers={'Content-Type': 'application/json'}
+)
+
+if credentials.is_api_success(response):
+    results = response.json()
+</pre>
+    </div>
+</section>
+
+<section style="max-width: 896px; margin: 0 auto;">
+    <div>
+        <h3>Features Details</h3>
+        <ul>
+            <li><b>Authentication Support:</b>
+                <ul>
+                    <li>Basic Authentication</li>
+                    <li>API Key Authentication</li>
+                    <li>OAuth Support</li>
+                </ul>
+            </li>
+            <li><b>Request Management:</b>
+                <ul>
+                    <li>Automatic retry on failure</li>
+                    <li>Timeout handling</li>
+                    <li>Rate limiting support</li>
+                </ul>
+            </li>
+            <li><b>Response Handling:</b>
+                <ul>
+                    <li>JSON response parsing</li>
+                    <li>Error handling and logging</li>
+                    <li>Response data validation</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</section>
+
+<section style="max-width: 896px; margin: 0 auto;">
+    <div>
+        <h3>Bug Tracker</h3>
+        <p>
+            Bugs are tracked on <a href="https://kitworks.systems/requests">https://kitworks.systems/requests</a>.
+            In case of trouble, please check there if your issue has already
+            been reported.
+        </p>
+    </div>
+</section>
+
+<section style="max-width: 896px; margin: 0 auto; text-align: center;">
+    <div>
+        <h2 style="color: #138c33">Maintainer</h2>
+        <p>KitWorks Systems. Our web site: <a href="https://kitworks.systems">https://kitworks.systems</a></p>
+
+        <p>
+            We can provide you further Odoo Support, Odoo implementation,
+            Odoo customization, Odoo 3rd Party development and integration
+            software, consulting services. Our main goal is to provide the best
+            quality product for you.
+        </p>
+        <p>
+            For any questions
+            <a href="mailto:info@kitworks.systems">contact us</a>.
+        </p>
+    </div>
+</section>

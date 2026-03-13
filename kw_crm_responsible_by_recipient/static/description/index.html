@@ -1,0 +1,103 @@
+<section style="max-width: 896px; margin: 0 auto;">
+    <div style="text-align: center;">
+        <h1 style="color:#875A7B;">CRM Auto Assign Responsible by Email</h1>
+    </div>
+    <div style="text-align: center;">
+        <p>
+            <a href="http://www.gnu.org/licenses/lgpl-3.0-standalone.html">
+                <img alt="License: LGPL-3"
+                     src="https://img.shields.io/badge/license-LGPL--3-blue.png"/></a>
+            <a href="https://kitworks.systems/">
+                <img alt="Kitworks Systems"
+                     src="https://img.shields.io/badge/maintainer-Kitworks-purple.png"/></a>
+        </p>
+        <p><br></p>
+    </div>
+</section>
+
+<section style="max-width: 896px; margin: 0 auto;">
+    <div>
+        <h2 class="oe_slogan" style="color:#875A7B;">CRM Auto Assign Responsible by Email</h2>
+        <h3 class="oe_slogan">Automatic assignment of responsible user based on email recipient</h3>
+    </div>
+</section>
+
+<section style="max-width: 896px; margin: 0 auto;">
+    <div>
+        <h2 class="oe_slogan" style="color:#875A7B;">Description</h2>
+        <div class="oe_span6">
+            <p class="oe_mt32 text-justify">
+                This module automatically assigns a responsible user to CRM leads 
+                created from incoming emails based on the email recipient.
+            </p>
+        </div>
+    </div>
+</section>
+
+<section style="max-width: 896px; margin: 0 auto;">
+    <div>
+        <h2 class="oe_slogan" style="color:#875A7B;">Features</h2>
+        <div>
+            <div>
+                <ul>
+                    <li>Automatically assigns responsible user based on email recipient</li>
+                    <li>First searches for users with matching email addresses in the 'to' field</li>
+                    <li>If no match is found in the 'to' field, searches in the 'recipients' field</li>
+                    <li>Only assigns active users</li>
+                    <li>Preserves existing CRM behavior when no matching user is found</li>
+                    <li>Detailed logging for debugging purposes</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section style="max-width: 896px; margin: 0 auto;">
+    <div>
+        <h2 class="oe_slogan" style="color:#875A7B;">How it works</h2>
+        <div>
+            <div>
+                <ol>
+                    <li>When an email is received and processed to create a CRM lead</li>
+                    <li>The module searches for active users whose email matches any of the recipients</li>
+                    <li>Priority order:
+                        <ul>
+                            <li>First checks recipients in the 'to' field</li>
+                            <li>Then checks the 'recipients' field (includes CC, BCC, etc.)</li>
+                        </ul>
+                    </li>
+                    <li>If a matching user is found, they are assigned as the responsible user</li>
+                    <li>If no matching user is found, the lead is created without a responsible user (standard behavior)</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section style="max-width: 896px; margin: 0 auto;">
+    <div>
+        <h2 class="oe_slogan" style="color:#875A7B;">Technical Details</h2>
+        <div>
+            <div>
+                <ul>
+                    <li>Overrides the <code>message_new</code> method in the <code>crm.lead</code> model</li>
+                    <li>Uses <code>email_normalize</code> for proper email matching</li>
+                    <li>Includes comprehensive logging for troubleshooting</li>
+                    <li>Maintains compatibility with standard CRM workflow</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section style="max-width: 896px; margin: 0 auto;">
+    <div>
+        <h2 class="oe_slogan" style="color:#875A7B;">Contacts</h2>
+        <div>
+            <ul class="text-center">
+                <li><a href="https://kitworks.systems/">https://kitworks.systems/</a></li>
+                <li><a href="mailto:info@kitworks.systems">info@kitworks.systems</a></li>
+            </ul>
+        </div>
+    </div>
+</section>
