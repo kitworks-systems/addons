@@ -1,0 +1,4 @@
+- Created index.html description file
+- Added images section to manifest
+- Updated documentation structure
+- Fixed manifest file references

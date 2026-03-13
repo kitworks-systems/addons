@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_test_year,access_test_year,model_test_year,,1,1,1,1
+access_test_week,access_test_week,model_test_week,,1,1,1,1
+access_test_month,access_test_month,model_test_month,,1,1,1,1
+access_test_quarter,access_test_quarter,model_test_quarter,,1,1,1,1

@@ -1,0 +1,3 @@
+- Updated documentation structure
+- Fixed manifest file references
+- Removed cover.png reference from manifest

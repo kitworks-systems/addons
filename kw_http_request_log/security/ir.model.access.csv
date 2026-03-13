@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_kw_http_request_log,access_kw_http_request_log,model_kw_http_request_log,base.group_system,1,0,0,1
+access_kw_http_request_log_source,access_kw_http_request_log_source,model_kw_http_request_log_source,base.group_system,1,1,0,1
+access_kw_http_request_log_source_mixin,access_kw_http_request_log_source,model_kw_http_request_log_source_mixin,base.group_system,1,0,0,0
