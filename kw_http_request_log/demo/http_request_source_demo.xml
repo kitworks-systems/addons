@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="kw_http_request_log_source_demo" model="kw.http.request.log.source">
+        <field name="name">demo</field>
+        <field name="log_retention_period" eval="10"/>
+    </record>
+
+    <record id="kw_http_request_log_source_demo_xml" model="kw.http.request.log.source">
+        <field name="name">demo xml</field>
+        <field name="log_retention_period" eval="10"/>
+        <field name="type">xml</field>
+    </record>
+</odoo>

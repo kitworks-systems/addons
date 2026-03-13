@@ -1,0 +1,4 @@
+- Created index.html description file
+- Fixed category to "Hidden/Tests"
+- Updated documentation structure
+- Fixed manifest file references
